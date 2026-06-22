@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class Controller
 {
-    public function index() {
-        return "<h1>Get a job!<h1>";
-    }
+    //add if needed
 }
 
 // placeholder controller

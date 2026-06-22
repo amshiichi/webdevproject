@@ -1,5 +1,6 @@
 <!--
 Detailed view of a single job with an "Apply Now" button.
+show.blade
 -->
 <!-- Detailed view of a single job with an "Apply Now" button. -->
 @extends('layouts.app')
@@ -27,8 +28,14 @@ Detailed view of a single job with an "Apply Now" button.
 
     <div class="job-card">
         <div style="margin-bottom:16px">
-            <span class="pill">{{ $job->type ?? 'Full-time' }}</span>
-            <span class="pill">{{ $job->salary ?? 'Competitive' }}</span>
+            <span class="pill">{{ $job->type }}</span>
+            <span class="pill">
+                @if ($job->salary_min && $job->salary_max)
+                    ₱{{ number_format($job->salary_min) }} – ₱{{ number_format($job->salary_max) }}
+                @else
+                    Competitive
+                @endif
+            </span>
         </div>
         <h2>Job Description</h2>
         <p>{{ $job->description ?? 'Placeholder description for this job posting.' }}</p>

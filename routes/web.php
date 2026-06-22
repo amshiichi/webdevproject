@@ -16,12 +16,17 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Jobs
 Route::get('home', [JobController::class, 'index'])->name('jobs.index');
-Route::get('job/create', [JobController::class, 'create'])->name('jobs.create');
-Route::post('job/create', [JobController::class, 'store'])->name('jobs.store');
 Route::get('job/show/{id}', [JobController::class, 'show'])->name('jobs.show');
-Route::get('job/edit/{id}', [JobController::class, 'edit'])->name('jobs.edit');
-Route::post('job/edit/{id}', [JobController::class, 'update'])->name('jobs.update');
-Route::post('job/delete/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
+
+Route::middleware(['auth', 'role:employer'])->group(function(){
+    Route::get('job/create', [JobController::class, 'create'])->name('jobs.create');
+    Route::post('job/create', [JobController::class, 'store'])->name('jobs.store');
+    Route::get('job/show/{id}', [JobController::class, 'show'])->name('jobs.show');
+    Route::get('job/edit/{id}', [JobController::class, 'edit'])->name('jobs.edit');
+    Route::post('job/edit/{id}', [JobController::class, 'update'])->name('jobs.update');
+    Route::post('job/delete/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
+});
+
 
 // Profiles
 Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');

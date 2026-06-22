@@ -1,5 +1,6 @@
 <!--
 The Homepage. Contains the search input, filter sidebar, and the list of jobs.
+index.blade
 -->
 
 @extends('layouts.app')
@@ -84,7 +85,6 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
         color: #93c5fd;
     }
 
-    /* Layout ng Structure */
     .main-layout {
         display: grid;
         grid-template-columns: 340px 1fr;
@@ -275,7 +275,7 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
 
         <form action="{{ route('jobs.index') }}" method="GET" class="search-container">
             <i class="bi bi-search search-icon"></i>
-            <input type="text" name="q" placeholder="Search jobs, companies, skills..." class="search-input">
+            <input type="text" name="keyword" placeholder="Search jobs, companies, skills..." class="search-input" value="{{ request('keyword') }}">
             <button class="btn btn-royal-primary btn-search-submit" type="submit">
                 Search
             </button>
@@ -294,30 +294,30 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
                 Filters
             </h3>
 
-            <form method="GET">
+            <form method="GET" action="{{ route('jobs.index') }}">
                 <div class="filter-group">
                     <label class="filter-label">Job Type</label>
                     <select name="type" class="filter-select">
                         <option value="">All Jobs</option>
-                        <option>Full-time</option>
-                        <option>Part-time</option>
-                        <option>Contract</option>
-                        <option>Internship</option>
+                        <option value="full-time" @selected(request('type') == 'full-time')>Full-time</option>
+                        <option value="part-time" @selected(request('type') == 'part-time')>Part-time</option>
+                        <option value="contract" @selected(request('type') == 'contract')>Contractual</option>
+                        <option value="internship" @selected(request('type') == 'internship')>Internship</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
                     <label class="filter-label">Location</label>
-                    <input type="text" name="location" placeholder="City or Remote" class="filter-input">
+                    <input type="text" name="location" placeholder="City or Remote" class="filter-input" value="{{ request('location') }}">
                 </div>
 
                 <div class="filter-group">
                     <label class="filter-label">Experience Level</label>
-                    <select class="filter-select">
-                        <option>Any</option>
-                        <option>Entry Level</option>
-                        <option>Mid Level</option>
-                        <option>Senior</option>
+                    <select name="experience_level" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="entry" @selected(request('experience_level') == 'entry')>Entry Level</option>
+                        <option value="mid" @selected(request('experience_level') == 'mid')>Mid Level</option>
+                        <option value="senior" @selected(request('experience_level') == 'senior')>Senior Level</option>
                     </select>
                 </div>
 
@@ -334,99 +334,66 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:36px;">
                 <div>
                     <h2 class="section-header-title">Available Jobs</h2>
-                    <p class="section-header-subtitle">250+ opportunities listed</p>
+                    <p class="section-header-subtitle">{{ $jobs->count() }} opportunities listed</p>
                 </div>
 
-                <a href="{{ route('jobs.create') ?? '#' }}" class="btn btn-royal-primary d-inline-flex align-items-center">
-                    <i class="bi bi-plus-circle-fill me-2"></i> Post Job
-                </a>
+                @if(auth()->check() && auth()->user()->role==='employer')
+                    <a href="{{ route('jobs.create') }}" class="btn btn-royal-primary d-inline-flex align-items-center">
+                        <i class="bi bi-plus-circle-fill me-2"></i> Post Job
+                    </a>
+                @endif
             </div>
 
-            {{-- JOB CARD 1 --}}
-            <div class="job-card">
-                <div style="display:flex; justify-content:space-between; align-items:start; gap:24px;">
-                    <div>
-                        <h3 class="job-title">Software Engineer</h3>
-                        <p class="company-name">
-                            <i class="bi bi-building me-2"></i> TechCorp Inc.
-                        </p>
+            {{-- JOB CARDS --}}
+            @forelse ($jobs as $job)
+                <div class="job-card">
+                    <div style="display:flex; justify-content:space-between; align-items:start; gap:24px;">
+                        <div>
+                            <h3 class="job-title">{{ $job->title }}</h3>
+                            <p class="company-name">
+                                <i class="bi bi-building me-2"></i> {{ $job->company }}
+                            </p>
 
-                        <div class="meta-tag-container">
-                            <span class="meta-tag">
-                                <i class="bi bi-geo-alt-fill me-2"></i> Manila
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-briefcase-fill me-2"></i> Full-time
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-cash-stack me-2"></i> ₱45,000 - ₱60,000
-                            </span>
+                            <div class="meta-tag-container">
+                                <span class="meta-tag">
+                                    <i class="bi bi-geo-alt-fill me-2"></i> {{ $job->location }}
+                                </span>
+                                <span class="meta-tag">
+                                    <i class="bi bi-briefcase-fill me-2"></i> {{ ucfirst(str_replace('-', ' ', $job->type)) }}
+                                </span>
+                                <span class="meta-tag">
+                                    <i class="bi bi-bar-chart-fill me-2"></i> {{ ucfirst($job->experience_level) }} Level
+                                </span>
+                                <span class="meta-tag">
+                                    <i class="bi bi-cash-stack me-2"></i>
+                                    @if ($job->salary_min && $job->salary_max)
+                                        ₱{{ number_format($job->salary_min) }} – ₱{{ number_format($job->salary_max) }}
+                                    @else
+                                        Competitive
+                                    @endif
+                                </span>
+                            </div>
+
+                            <p class="job-description">
+                                {{ Str::limit($job->description, 150) }}
+                            </p>
                         </div>
-
-                        <p class="job-description">
-                            Build and maintain scalable web applications using modern technologies and collaborate with cross-functional teams.
-                        </p>
                     </div>
 
-                    <div>
-                        <button class="btn btn-royal-outline" style="padding: 12px 16px;">
-                            <i class="bi bi-bookmark"></i>
-                        </button>
+                    <hr class="custom-hr">
+
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
+                            <i class="bi bi-clock-history me-2"></i> Posted {{ $job->created_at->diffForHumans() }}
+                        </small>
+                        <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-royal-primary">View Job</a>
                     </div>
                 </div>
-
-                <hr class="custom-hr">
-
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
-                        <i class="bi bi-clock-history me-2"></i> Posted 2 days ago
-                    </small>
-                    <a href="#" class="btn btn-royal-primary">View Job</a>
+            @empty
+                <div class="job-card" style="text-align:center;">
+                    <p class="job-description">No jobs found matching your search.</p>
                 </div>
-            </div>
-
-            {{-- JOB CARD 2 --}}
-            <div class="job-card">
-                <div style="display:flex; justify-content:space-between; align-items:start; gap:24px;">
-                    <div>
-                        <h3 class="job-title">UI/UX Designer</h3>
-                        <p class="company-name">
-                            <i class="bi bi-building me-2"></i> Creative Studio
-                        </p>
-
-                        <div class="meta-tag-container">
-                            <span class="meta-tag">
-                                <i class="bi bi-geo-alt-fill me-2"></i> Remote
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-briefcase-fill me-2"></i> Full-time
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-cash-stack me-2"></i> ₱40,000 - ₱55,000
-                            </span>
-                        </div>
-
-                        <p class="job-description">
-                            Design intuitive user experiences and collaborate with developers to create modern digital products.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <button class="btn btn-royal-outline" style="padding: 12px 16px;">
-                            <i class="bi bi-bookmark"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <hr class="custom-hr">
-
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
-                        <i class="bi bi-clock-history me-2"></i> Posted today
-                    </small>
-                    <a href="#" class="btn btn-royal-primary">View Job</a>
-                </div>
-            </div>
+            @endforelse
 
         </div>
     </div>

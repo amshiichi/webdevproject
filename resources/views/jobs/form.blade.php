@@ -1,5 +1,6 @@
 <!--
 A shared file used for both creating and editing a job post (Employer only).
+form.blade
 -->
 <!-- Shared file for creating and editing a job post (Employer only). -->
 @extends('layouts.app')
@@ -154,48 +155,84 @@ A shared file used for both creating and editing a job post (Employer only).
 
         <form method="POST" action="{{ isset($job) ? route('jobs.update', $job->id) : route('jobs.store') }}">
             @csrf
-            @isset($job) @method('PUT') @endisset
 
             <div class="field">
                 <label>Job Title</label>
-                <input type="text" name="title" value="{{ $job->title ?? '' }}" placeholder="e.g. Senior Frontend Developer">
+                <input type="text" name="title" value="{{ old('title', $job->title ?? '') }}" placeholder="e.g. Senior Frontend Developer">
             </div>
 
             <div class="row">
                 <div class="field">
-                    <label>Location</label>
-                    <input type="text" name="location" value="{{ $job->location ?? '' }}" placeholder="e.g. Manila, PH">
+                    <label>Company</label>
+                    <input type="text" name="company" value="{{ old('company', $job->company ?? '') }}" placeholder="e.g. TechCorp Inc.">
                 </div>
+
+                <div class="field">
+                    <label>Location</label>
+                    <input type="text" name="location" value="{{ old('location', $job->location ?? '') }}" placeholder="e.g. Manila, PH">
+                </div>
+
+            </div>
+
+            <div class="row">
                 <div class="field">
                     <label>Job Type</label>
                     <select name="type">
-                        <option value="full-time" {{ (old('type', $job->type ?? '') == 'full-time') ? 'selected' : '' }}>Full-time</option>
-                        <option value="part-time" {{ (old('type', $job->type ?? '') == 'part-time') ? 'selected' : '' }}>Part-time</option>
-                        <option value="contract" {{ (old('type', $job->type ?? '') == 'contract') ? 'selected' : '' }}>Contract</option>
-                        <option value="internship" {{ (old('type', $job->type ?? '') == 'internship') ? 'selected' : '' }}>Internship</option>
+                        <option value="full-time" {{ old('type', $job->type ?? '') == 'full-time' ? 'selected' : '' }}>Full-time</option>
+                        <option value="part-time" {{ old('type', $job->type ?? '') == 'part-time' ? 'selected' : '' }}>Part-time</option>
+                        <option value="contract" {{ old('type', $job->type ?? '') == 'contract' ? 'selected' : '' }}>Contract</option>
+                        <option value="internship" {{ old('type', $job->type ?? '') == 'internship' ? 'selected' : '' }}>Internship</option>
                     </select>
                 </div>
+
+                <div class="field">
+                    <label>Experience Level</label>
+                    <select name="experience_level">
+                        <option value="entry" {{ old('experience_level', $job->experience_level ?? '') == 'entry' ? 'selected' : '' }}>Entry Level</option>
+                        <option value="mid" {{ old('experience_level', $job->experience_level ?? '') == 'mid' ? 'selected' : '' }}>Mid Level</option>
+                        <option value="senior" {{ old('experience_level', $job->experience_level ?? '') == 'senior' ? 'selected' : '' }}>Senior</option>
+                    </select>
+                </div>
+
             </div>
 
-            <div class="field">
-                <label>Salary Range</label>
-                <input type="text" name="salary" value="{{ $job->salary ?? '' }}" placeholder="e.g. ₱40,000 – ₱60,000">
+            <div class="row">
+                <div class="field">
+                    <label>Minimum Salary</label>
+                    <input type="number" name="salary_min" value="{{ old('salary_min', $job->salary_min ?? '') }}" placeholder="e.g. 40000">
+                </div>
+
+                <div class="field">
+                    <label>Maximum Salary</label>
+                    <input type="number" name="salary_max" value="{{ old('salary_max', $job->salary_max ?? '') }}" placeholder="e.g. 60000">
+                </div>
             </div>
 
             <div class="field">
                 <label>Description</label>
-                <textarea name="description" placeholder="Describe the role, responsibilities, and team...">{{ $job->description ?? '' }}</textarea>
+                <textarea name="description" placeholder="Describe the role, responsibilities, and team...">{{ old('description', $job->description ?? '') }}</textarea>
             </div>
 
             <div class="field">
                 <label>Requirements</label>
-                <textarea name="requirements" placeholder="List required skills, experience, and qualifications...">{{ $job->requirements ?? '' }}</textarea>
+                <textarea name="requirements" placeholder="List required skills, experience, and qualifications...">{{ old('requirements', $job->requirements ?? '') }}</textarea>
             </div>
+
+            @if ($errors->any())
+                <div style="color: red; margin-bottom: 20px;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="actions">
                 <a href="{{ route('jobs.index') }}" class="btn btn-ghost">Cancel</a>
                 <button type="submit" class="btn btn-primary">{{ isset($job) ? 'Save Changes' : 'Publish Job' }}</button>
             </div>
+
         </form>
     </div>
 </div>
