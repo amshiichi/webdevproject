@@ -228,6 +228,16 @@
             <h2>Sign Up</h2>
             <p>Create an account to continue into the job board.</p>
 
+            @if ($errors->any())
+                <div style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; padding:12px 16px; border-radius:8px; margin-bottom:20px;">
+                    <ul style="margin:0; padding-left:18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('register.submit') }}">
                 @csrf
                 <div class="field-grid">

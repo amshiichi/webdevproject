@@ -15,8 +15,8 @@ class JobController extends Controller
     // create / store / edit / update / destroy: Handled here but restricted to Employers via middleware.
 
     public function index(Request $request){
-        if (session('account_role') === 'employer') {
-            return view('employer.home');
+        if(Auth::check() && Auth::user()->role === 'employer'){
+            return redirect()->route('employer.home');
         }
 
         $query = JobListing::where('status', 'approved');
@@ -43,27 +43,25 @@ class JobController extends Controller
 
         $jobs = $query->latest()->get();
 
-        return view('jobs.index', ['jobs' => $jobs]);
+        return view('jobs.index', compact('jobs'));
     }
 
     //show the jobs listed by the logged in employer
     public function hub(){
         $jobs = JobListing::where('employer_id', Auth::id())->latest()->get();
         
-        return view('employer.hub', ['jobs' => $jobs]);
+        return view('employer.hub', compact('jobs'));
     }
 
     public function show($id){
-        if (!session()->has('account_role')) {
-            return redirect()->route('login');
-        }
         $job = JobListing::findOrFail($id);
-        return view('jobs.show', ['job' => $job]);
+        return view('jobs.show', compact('job'));
     }
 
     //crud's  restricted to employers only
     public function create(){
-        return view('jobs.form', ['mode' => 'create']);
+        $mode = 'create';
+        return view('jobs.form', compact('mode'));
     }
 
     public function store(Request $request){
@@ -91,7 +89,9 @@ class JobController extends Controller
 
         $this->authorizeOwner($job);
 
-        return view('jobs.form', ['mode' => 'edit', 'job' => $job]);
+        $mode = 'edit';
+
+        return view('jobs.form', compact('mode', 'job'));
     }
 
     public function update(Request $request, $id){

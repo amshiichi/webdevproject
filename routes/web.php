@@ -6,10 +6,11 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NotificationController;
 
 Route::view('employer/home', 'employer.home')->name('employer.home');
 Route::view('/', 'landing')->name('landing');
-Route::view('notifications', 'notifications.index')->name('notifications.index');
+Route::middleware('auth')->get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
 // Auth
 Route::get('login', [AuthController::class, 'showLogin'])->name('login');
@@ -35,17 +36,23 @@ Route::middleware(['auth', 'role:employer'])->group(function(){
 });
 
 // Profiles
-Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
-Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('profile/edit', [ProfileController::class, 'update'])->name('profile.update');
+Route::middleware('auth')->group(function(){
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/edit', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 // Applications
-Route::get('applications', [ApplicationController::class, 'index'])->name('applications.index');
-Route::post('job/apply/{id}', [ApplicationController::class, 'store'])->name('applications.store');
-Route::get('applications/review/{id}', [ApplicationController::class, 'review'])->name('applications.review');
-Route::get('applications/review/{jobId}/applicant/{applicantId}', [ApplicationController::class, 'applicant'])->name('applications.applicant');
-Route::get('applications/review/{jobId}/applicant/{applicantId}/resume', [ApplicationController::class, 'resume'])->name('applications.applicant.resume');
-Route::post('applications/review/{id}', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+Route::middleware('auth')->group(function(){
+    Route::get('applications', [ApplicationController::class, 'index'])->name('applications.index');
+    Route::post('job/apply/{id}', [ApplicationController::class, 'store'])->name('applications.store');
+    Route::get('applications/review/{id}', [ApplicationController::class, 'review'])->name('applications.review');
+    Route::post('applications/review/{id}', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+    Route::get('applications/review/{jobId}/applicant/{applicantId}', [ApplicationController::class, 'applicant'])->name('applications.applicant');
+    Route::get('applications/review/{jobId}/applicant/{applicantId}/resume', [ApplicationController::class, 'resume'])->name('applications.applicant.resume');
+    Route::post('applications/review/{jobId}/applicant/{applicantId}', [ApplicationController::class, 'updateApplicantStatus'])->name('applications.applicant.updateStatus');
+
+});
 
 // Admin
 Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');

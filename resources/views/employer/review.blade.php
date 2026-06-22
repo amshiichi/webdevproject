@@ -49,24 +49,35 @@
             </div>
 
             <div class="summary">
-                <div class="item"><div class="lbl">Applications</div><div class="val">{{ $job->applications_count }}</div></div>
-                <div class="item"><div class="lbl">Shortlisted</div><div class="val">{{ $job->shortlisted_count }}</div></div>
-                <div class="item"><div class="lbl">Status</div><div class="val">{{ ucfirst($job->status) }}</div></div>
+                <div class="item">
+                    <div class="lbl">Applications</div>
+                    <div class="val">{{ $job->applications_count }}</div>
+                </div>
+                <div class="item">
+                    <div class="lbl">Shortlisted</div>
+                    <div class="val">{{ $shortlistedCount }}</div>
+                </div>
+                <div class="item">
+                    <div class="lbl">Status</div>
+                    <div class="val">{{ ucfirst($job->posting_status) }}</div>
+                </div>
             </div>
 
             <h3 class="section-title">Applicants</h3>
             <div class="app-list">
-                @foreach ($applicants as $applicant)
-                    <a class="applicant-row" href="{{ route('applications.applicant', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">
+                @forelse ($applications as $application)
+                    <a class="applicant-row" href="{{ route('applications.applicant', ['jobId' => $job->id, 'applicantId' => $application->applicant->id]) }}">
                         <div class="applicant-main">
-                            <div class="avatar">{{ strtoupper(substr($applicant->name, 0, 1)) }}</div>
+                            <div class="avatar">{{ strtoupper(substr($application->applicant->name, 0, 1)) }}</div>
                             <div>
-                                <div class="applicant-name"><span class="applicant-link">{{ $applicant->name }}</span></div>
-                                <div class="applicant-meta">{{ $applicant->email }} • {{ $applicant->experience }}</div>
+                                <div class="applicant-name"><span class="applicant-link">{{ $application->applicant->name }}</span></div>
+                                <div class="applicant-meta">{{ $application->applicant->email }} • Status: {{ ucfirst($application->status) }}</div>
                             </div>
                         </div>
                     </a>
-                @endforeach
+                @empty
+                    <p>No applicants yet.</p>
+                @endforelse
             </div>
         </div>
 
@@ -75,7 +86,6 @@
             <p class="note">Change the posting status to Live, Screening, or Closed.</p>
             <form method="POST" action="{{ route('applications.updateStatus', $job->id) }}">
                 @csrf
-                @method('PUT')
                 <div class="field">
                     <label>Posting Status</label>
                     <select name="status">
@@ -83,10 +93,6 @@
                         <option value="screening" {{ $job->status === 'screening' ? 'selected' : '' }}>Screening</option>
                         <option value="closed" {{ $job->status === 'closed' ? 'selected' : '' }}>Closed</option>
                     </select>
-                </div>
-                <div class="field">
-                    <label>Notes (optional)</label>
-                    <textarea name="notes" placeholder="Internal notes about this job post or applicants..."></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%">Save Status</button>
             </form>

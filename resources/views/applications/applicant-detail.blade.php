@@ -41,31 +41,32 @@
                     <div class="avatar">{{ strtoupper(substr($applicant->name, 0, 1)) }}</div>
                     <div>
                         <h1 class="name">{{ $applicant->name }}</h1>
-                        <div class="meta">{{ $applicant->email }}<br>{{ $applicant->phone }} • {{ $applicant->location }}</div>
+                        <div class="meta">{{ $applicant->email }}<br>{{ $applicant->phone ?? 'No phone listed' }} • {{ $applicant->location ?? 'No location listed'}}</div>
                     </div>
                 </div>
-                <div class="badge">{{ $applicant->experience }}</div>
+                <div class="badge">{{ ucfirst($application->status) }}</div>
             </div>
 
             <h2 class="section">Applicant Info</h2>
             <div class="info-grid">
-                <div class="info"><div class="lbl">Experience</div><div class="val">{{ $applicant->experience }}</div></div>
-                <div class="info"><div class="lbl">Education</div><div class="val">{{ $applicant->education }}</div></div>
                 <div class="info"><div class="lbl">Role</div><div class="val">Applying for {{ $job->title }}</div></div>
                 <div class="info"><div class="lbl">Company</div><div class="val">{{ $job->company }}</div></div>
-            </div>
-
-            <div style="margin-top:18px;">
-                <h2 class="section">Summary</h2>
-                <p class="summary">{{ $applicant->summary }}</p>
+                <div class="info"><div class="lbl">Experience</div><div class="val">{{ $applicant->experience ?: 'Not specified' }}</div></div>
+                <div class="info"><div class="lbl">Education</div><div class="val">{{ $applicant->education ?: 'Not specified' }}</div></div>
+                <div class="info"><div class="lbl">Applied On</div><div class="val">{{ $application->created_at->format('M d, Y') }}</div></div>
+                <div class="info"><div class="lbl">Status</div><div class="val">{{ ucfirst($application->status) }}</div></div>
             </div>
 
             <div style="margin-top:18px;">
                 <h2 class="section">Skills</h2>
                 <div class="skills">
-                    @foreach ($applicant->skills as $skill)
-                        <span class="skill">{{ $skill }}</span>
-                    @endforeach
+                    @if ($applicant->skills)
+                        @foreach (explode(',', $applicant->skills) as $skill)
+                            <span class="skill">{{ trim($skill) }}</span>
+                        @endforeach
+                    @else
+                        <p>No skills listed.</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -73,16 +74,25 @@
         <aside class="card">
             <h2 class="section">Resume</h2>
             <div class="resume-box">
-                <p class="resume-title">Resume Preview</p>
-                <div class="resume-preview">{{ $resumeText }}</div>
-                <div class="actions" style="margin-top: 14px;">
+                @if ($applicant->resume_path)
                     <a class="btn btn-primary" href="{{ route('applications.applicant.resume', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">Download Resume</a>
-                </div>
+                @else
+                    <p>No resume uploaded.</p>
+                @endif
             </div>
 
             <div style="margin-top:18px;">
-                <h2 class="section">Contact</h2>
-                <p class="resume-line">Email: {{ $applicant->email }}<br>Phone: {{ $applicant->phone }}<br>Location: {{ $applicant->location }}</p>
+                <h2 class="section">Update Application Status</h2>
+                <form method="POST" action="{{ route('applications.applicant.updateStatus', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">
+                    @csrf
+                    <select name="status" class="filter-select" style="margin-bottom:10px;">
+                        <option value="pending" {{ $application->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="interview" {{ $application->status === 'interview' ? 'selected' : '' }}>Interview</option>
+                        <option value="hired" {{ $application->status === 'hired' ? 'selected' : '' }}>Hired</option>
+                        <option value="rejected" {{ $application->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Update Status</button>
+                </form>
             </div>
 
             <div class="actions">

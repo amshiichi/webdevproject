@@ -179,23 +179,34 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
     <p class="page-subtitle">Monitor the status of all your job applications</p>
 
     {{-- STAT CARDS --}}
-     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px">
-    <div class="card" style="border-left:4px solid var(--rb-700)">
-      <p style="color:var(--muted);font-size:18px">TOTAL</p>
-      <h2 style="font-size:32px">12</h2>
-    </div>
-    <div class="card" style="border-left:4px solid var(--warn)">
-      <p style="color:var(--muted);font-size:18px">PENDING</p>
-      <h2 style="font-size:32px">5</h2>
-    </div>
-    <div class="card" style="border-left:4px solid var(--ok)">
-      <p style="color:var(--muted);font-size:18px">ACCEPTED</p>
-      <h2 style="font-size:32px">4</h2>
-    </div>
-    <div class="card" style="border-left:4px solid var(--bad)">
-      <p style="color:var(--muted);font-size:18px">REJECTED</p>
-      <h2 style="font-size:32px">3</h2>
-    </div>
+    @php
+        $total = $applications->count();
+        $pending = $applications->where('status', 'pending')->count();
+        $interview = $applications->where('status', 'interview')->count();
+        $hired = $applications->where('status', 'hired')->count();
+        $rejected = $applications->where('status', 'rejected')->count();
+    @endphp
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px">
+        <div class="card" style="border-left:4px solid var(--rb-700)">
+            <p style="color:var(--muted);font-size:18px">TOTAL</p>
+            <h2 style="font-size:32px">{{ $total }}</h2>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--warn)">
+            <p style="color:var(--muted);font-size:18px">PENDING</p>
+            <h2 style="font-size:32px">{{ $pending }}</h2>
+        </div>
+        
+        <div class="card" style="border-left:4px solid var(--ok)">
+            <p style="color:var(--muted);font-size:18px">HIRED</p>
+            <h2 style="font-size:32px">{{ $hired }}</h2>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--bad)">
+            <p style="color:var(--muted);font-size:18px">REJECTED</p>
+            <h2 style="font-size:32px">{{ $rejected }}</h2>
+        </div>
   </div>
 
     {{-- TABLE --}}
@@ -211,30 +222,17 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach($applications as $app) --}}
+            @forelse ($applications as $app)
                 <tr>
-                    <td class="job-title-cell">Frontend Developer</td>
-                    <td class="company-cell">TechCorp</td>
-                    <td style="opacity: 0.85;">Jun 10, 2026</td>
-                    <td>
-                        <span class="status-pill pill-pending">Pending</span>
-                    </td>
-                    <td>
-                        <a href="#" class="btn-royal-outline">View</a>
-                    </td>
+                    <td class="job-title-cell">{{ $app->jobListing->title }}</td>
+                    <td class="company-cell">{{ $app->jobListing->company }}</td>
+                    <td style="opacity: 0.85;">{{ $app->created_at->format('M d, Y') }}</td>
+                    <td><span class="status-pill pill-{{ $app->status }}">{{ ucfirst($app->status) }}</span></td>
+                    <td><a href="{{ route('jobs.show', $app->jobListing->id) }}" class="btn-royal-outline">View Job</a></td>
                 </tr>
-                <tr>
-                    <td class="job-title-cell">UI Designer</td>
-                    <td class="company-cell">Designly</td>
-                    <td style="opacity: 0.85;">Jun 05, 2026</td>
-                    <td>
-                        <span class="status-pill pill-accepted">Accepted</span>
-                    </td>
-                    <td>
-                        <a href="#" class="btn-royal-outline">View</a>
-                    </td>
-                </tr>
-                {{-- @endforeach --}}
+            @empty
+                <tr><td colspan="5">You haven't applied to any jobs yet.</td></tr>
+            @endforelse
             </tbody>
         </table>
     </div>

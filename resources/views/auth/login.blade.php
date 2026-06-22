@@ -221,6 +221,16 @@
             <h2>Log In</h2>
             <p>Enter your details to get back into the board.</p>
 
+            @if ($errors->any())
+                <div style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; padding:12px 16px; border-radius:8px; margin-bottom:20px;">
+                    <ul style="margin:0; padding-left:18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
                 <div class="field">
@@ -231,14 +241,6 @@
                 <div class="field">
                     <label for="password">Password</label>
                     <input id="password" type="password" name="password" placeholder="Enter your password" required>
-                </div>
-
-                <div class="field">
-                    <label for="role">Account type</label>
-                    <select id="role" name="role">
-                        <option value="applicant">Applicant</option>
-                        <option value="employer">Employer</option>
-                    </select>
                 </div>
 
                 <div class="auth-meta">

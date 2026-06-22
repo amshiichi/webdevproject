@@ -14,10 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('role')->default('applicant');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('role')->default('applicant'); //applicant, employer, admin
+            $table->text('bio')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('location')->nullable();
+            $table->string('education')->nullable();
+            $table->text('skills')->nullable(); //comma-separated, for applicants only
+            $table->string('experience')->nullable();
+            $table->string('resume_path')->nullable(); // stored resume oath for applicants only
             $table->string('password');
+            $table->string('account_status')->default('approved'); // pending, approved, suspended
             $table->rememberToken();
             $table->timestamps();
         });

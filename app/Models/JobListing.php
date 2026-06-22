@@ -15,10 +15,15 @@ class JobListing extends Model
         'company', 'location',
         'salary_min', 'salary_max',
         'type', 'experience_level',
-        'status' 
+        'status', 'posting_status'
     ];
 
     public function employer(){
         return $this->belongsTo(User::class, 'employer_id');
     }
+
+    public function applications(){
+        return $this->hasMany(Application::class, 'job_listing_id');
+    }
+
 }

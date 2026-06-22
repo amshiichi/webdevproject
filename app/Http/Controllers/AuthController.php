@@ -23,24 +23,19 @@ class AuthController extends Controller
             'password' => ['required']
         ]);
 
-        if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
+        if(!Auth::attempt($credentials)){
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match system records.'
+            ])->onlyInput('email');
         }
+
+        $request->session()->regenerate();
 
         $user = Auth::user();
-        if($user->role === 'employer'){
-            session(['account_role' => 'employer']);
-            return redirect()->route('employer.home');
-        }else{
-            session(['account_role' => 'applicant']);
-            return redirect()->route('jobs.index');
-        }
+        session(['account_role' => $user->role]);
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match system records.'
-        ])->onlyInput('email');
+        return $user->role === 'employer' ? redirect()->route('employer.home') : redirect()->route('jobs.index');
     }
-        
 
     public function showRegister(){
         return view('auth.register');
@@ -59,14 +54,13 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'role' => $validated['role'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password'])
+            'password' => Hash::make($validated['password']),
+            'account_status' => $validated['role'] === 'employer' ? 'pending' : 'approved'
         ]);
 
         Auth::login($user);
         session(['account_role' => $validated['role']]);
-        return $validated['role'] === 'employer'
-            ? redirect()->route('employer.home')
-            : redirect()->route('jobs.index');
+        return $validated['role'] === 'employer' ? redirect()->route('employer.home') : redirect()->route('jobs.index');
     }
 
     public function logout(Request $request){

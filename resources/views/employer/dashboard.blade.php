@@ -277,39 +277,20 @@
                 </tr>
             </thead>
             <tbody>
+            @forelse ($jobs as $job)
                 <tr>
                     <td>
-                        <p class="job-name">Frontend Developer</p>
-                        <div style="color:var(--muted);">Posted Jun 10, 2026</div>
+                        <p class="job-name">{{ $job->title }}</p>
+                        <div style="color:var(--muted);">Posted {{ $job->created_at->format('M d, Y') }}</div>
                     </td>
-                    <td class="company">TechCorp</td>
-                    <td>18</td>
-                    <td>5</td>
-                    <td><span class="status-pill"><i class="bi bi-lightning-charge-fill"></i> Live</span></td>
-                    <td><a class="action-link" href="{{ route('applications.review', 1) }}">View</a></td>
+                    <td class="company">{{ $job->company }}</td>
+                    <td>{{ $job->applications_count }}</td>
+                    <td><span class="status-pill"><i class="bi bi-lightning-charge-fill"></i> {{ ucfirst($job->posting_status) }}</span></td>
+                    <td><a class="action-link" href="{{ route('applications.review', $job->id) }}">View</a></td>
                 </tr>
-                <tr>
-                    <td>
-                        <p class="job-name">UI/UX Designer</p>
-                        <div style="color:var(--muted);">Posted Jun 05, 2026</div>
-                    </td>
-                    <td class="company">Creative Studio</td>
-                    <td>12</td>
-                    <td>4</td>
-                    <td><span class="status-pill"><i class="bi bi-clock-history"></i> Screening</span></td>
-                    <td><a class="action-link" href="{{ route('applications.review', 2) }}">View</a></td>
-                </tr>
-                <tr>
-                    <td>
-                        <p class="job-name">Project Coordinator</p>
-                        <div style="color:var(--muted);">Posted May 29, 2026</div>
-                    </td>
-                    <td class="company">Northwave Ltd.</td>
-                    <td>9</td>
-                    <td>2</td>
-                    <td><span class="status-pill"><i class="bi bi-check2-circle"></i> Closed</span></td>
-                    <td><a class="action-link" href="{{ route('applications.review', 3) }}">View</a></td>
-                </tr>
+            @empty
+                <tr><td colspan="5">No jobs posted yet.</td></tr>
+            @endforelse
             </tbody>
         </table>
     </div>

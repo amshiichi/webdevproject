@@ -203,7 +203,16 @@ The form to update details or upload a new PDF resume.
 
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
+
+            @if ($errors->any())
+                <div style="background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; padding:12px 16px; border-radius:8px; margin-bottom:20px;">
+                    <ul style="margin:0; padding-left:18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="field">
                 <label>{{ $isEmployer ? 'Company Name' : 'Full Name' }}</label>
@@ -220,12 +229,38 @@ The form to update details or upload a new PDF resume.
                 <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ $user->bio ?? '' }}</textarea>
             </div>
 
+            <div class="field">
+                <label>Phone Number</label>
+                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+63 900 000 0000">
+            </div>
+
+            <div class="field">
+                <label>Location</label>
+                <input type="text" name="location" value="{{ old('location', $user->location ?? '') }}" placeholder="e.g. Manila, PH">
+            </div>
+
             @if ($isEmployer)
                 <div class="field">
                     <label>Company Reviews</label>
                     <textarea name="reviews" placeholder="Add notes or highlights from applicant reviews..."></textarea>
                 </div>
             @else
+
+                <div class="field">
+                    <label>Education</label>
+                    <input type="text" name="education" value="{{ old('education', $user->education ?? '') }}" placeholder="e.g. BS Information Technology">
+                </div>
+
+                <div class="field">
+                    <label>Experience</label>
+                    <input type="text" name="experience" value="{{ old('experience', $user->experience ?? '') }}" placeholder="e.g. 3 years">
+                </div>
+
+                <div class="field">
+                    <label>Skills</label>
+                    <textarea name="skills" placeholder="e.g. HTML, CSS, JavaScript, PHP, Laravel, MySQL">{{ old('skills', $user->skills ?? '') }}</textarea>
+                </div>
+
                 <div class="field">
                     <label>Resume (PDF)</label>
                     <label class="file-drop" style="display: block; cursor: pointer;">
@@ -235,6 +270,7 @@ The form to update details or upload a new PDF resume.
                         <input type="file" name="resume" accept="application/pdf" style="display: none;">
                     </label>
                 </div>
+
             @endif
 
             <div class="actions">

@@ -337,7 +337,7 @@ index.blade
                     <p class="section-header-subtitle">{{ $jobs->count() }} opportunities listed</p>
                 </div>
 
-                @if(auth()->check() && auth()->user()->role==='employer')
+                @if(auth()->check() && auth()->user()->role === 'employer')
                     <a href="{{ route('jobs.create') }}" class="btn btn-royal-primary d-inline-flex align-items-center">
                         <i class="bi bi-plus-circle-fill me-2"></i> Post Job
                     </a>
@@ -389,67 +389,11 @@ index.blade
                         <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-royal-primary">View Job</a>
                     </div>
                 </div>
-<<<<<<< HEAD
             @empty
                 <div class="job-card" style="text-align:center;">
                     <p class="job-description">No jobs found matching your search.</p>
                 </div>
             @endforelse
-=======
-
-                <hr class="custom-hr">
-
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
-                        <i class="bi bi-clock-history me-2"></i> Posted 2 days ago
-                    </small>
-                    <a href="{{ route('jobs.show', 1) }}" class="btn btn-royal-primary">View Job</a>
-                </div>
-            </div>
-
-            {{-- JOB CARD 2 --}}
-            <div class="job-card">
-                <div style="display:flex; justify-content:space-between; align-items:start; gap:24px;">
-                    <div>
-                        <h3 class="job-title">UI/UX Designer</h3>
-                        <p class="company-name">
-                            <i class="bi bi-building me-2"></i> Creative Studio
-                        </p>
-
-                        <div class="meta-tag-container">
-                            <span class="meta-tag">
-                                <i class="bi bi-geo-alt-fill me-2"></i> Remote
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-briefcase-fill me-2"></i> Full-time
-                            </span>
-                            <span class="meta-tag">
-                                <i class="bi bi-cash-stack me-2"></i> ₱40,000 - ₱55,000
-                            </span>
-                        </div>
-
-                        <p class="job-description">
-                            Design intuitive user experiences and collaborate with developers to create modern digital products.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <button class="btn btn-royal-outline" style="padding: 12px 16px;">
-                            <i class="bi bi-bookmark"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <hr class="custom-hr">
-
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
-                        <i class="bi bi-clock-history me-2"></i> Posted today
-                    </small>
-                    <a href="{{ route('jobs.show', 2) }}" class="btn btn-royal-primary">View Job</a>
-                </div>
-            </div>
->>>>>>> origin/Complete-UI
 
         </div>
     </div>

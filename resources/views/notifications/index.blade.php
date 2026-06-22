@@ -103,7 +103,7 @@
         font-weight: 700;
         text-decoration: none;
         border: 1px solid transparent;
-        transition: transform .2s ease, background .2s ease, color .2s ease;
+        transition: transform .2s ease, background-color .2s ease, color .2s ease;
     }
 
     .button:hover { transform: translateY(-1px); }
@@ -129,27 +129,41 @@
         </div>
 
         <div class="notice-list">
-            <div class="notice">
-                <div class="notice-icon"><i class="bi bi-bell-fill"></i></div>
-                <div>
-                    <strong>Your profile is ready</strong>
-                    <p>Keep your resume and contact details updated so employers can review your application quickly.</p>
+            @forelse ($notifications as $notification)
+                <div class="notice" @if(!$notification->is_read) style="background-color: #eff6ff; border-left: 4px solid #3b82f6;" @endif>
+                    <div class="notice-icon">
+                        @if(str_contains(strtolower($notification->message), 'job'))
+                            <i class="bi bi-bookmark-check-fill"></i>
+                        @elseif(str_contains(strtolower($notification->message), 'application') || str_contains(strtolower($notification->message), 'apply'))
+                            <i class="bi bi-envelope-paper-fill"></i>
+                        @else
+                            <i class="bi bi-bell-fill"></i>
+                        @endif
+                    </div>
+                    
+                    <div>
+                        <p style="margin: 0; font-weight: 500;">{{ $notification->message }}</p>
+                        <small style="color: #64748b; display: block; margin-top: 4px;">
+                            {{ $notification->created_at->diffForHumans() }}
+                        </small>
+                        
+                        @if ($notification->link)
+                            <div style="margin-top: 8px;">
+                                <a href="{{ $notification->link }}" class="link-primary" style="text-decoration: none; font-size: 0.9rem;">
+                                    View Update →
+                                </a>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
-            <div class="notice">
-                <div class="notice-icon"><i class="bi bi-bookmark-check-fill"></i></div>
-                <div>
-                    <strong>New jobs match your search</strong>
-                    <p>Fresh roles were added today. Visit the public job list to browse and apply without signing in first.</p>
+            @empty
+                <div class="notice" style="justify-content: center; padding: 32px; color: #64748b;">
+                    <div>
+                        <i class="bi bi-chat-left-dots" style="font-size: 1.5rem; display: block; text-align: center; margin-bottom: 8px;"></i>
+                        <p style="margin: 0;">You have no notifications at the moment.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="notice">
-                <div class="notice-icon"><i class="bi bi-envelope-paper-fill"></i></div>
-                <div>
-                    <strong>Application activity</strong>
-                    <p>You’ll see updates here when employers respond to your applications or request additional details.</p>
-                </div>
-            </div>
+            @endforelse
         </div>
 
         <div class="notify-actions">

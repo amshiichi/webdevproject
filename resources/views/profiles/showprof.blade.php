@@ -3,6 +3,11 @@
 @section('title', 'My Profile')
 
 @section('content')
+
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 <style>
     /* Premium Royal Blue & White Palette Configuration */
     :root {
@@ -169,29 +174,34 @@
 
 <div class="profile-wrapper">
     <div class="profile-card">
-        @php($isEmployer = session('account_role') === 'employer')
+        @if (session('success'))
+            <div style="background:#dcfce7; border:1px solid #86efac; color:#15803d; padding:12px 16px; border-radius:8px; margin-bottom:20px;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @php($isEmployer = $user->role === 'employer')
 
         <div style="display:flex; gap:32px; align-items:center; flex-wrap:wrap;">
-            
             <div class="profile-avatar">
                 <i class="bi bi-person-fill"></i>
             </div>
 
             <div style="flex: 1;">
-                <h1 class="profile-name">
-                    {{ $isEmployer ? 'Nova Studio' : 'Juan Dela Cruz' }}
-                </h1>
+                <h1 class="profile-name">{{ $user->name }}</h1>
                 <p class="profile-meta-text">
                     <i class="bi bi-briefcase-fill"></i>
                     {{ $isEmployer ? 'Employer' : 'Applicant' }}
                 </p>
-                <p class="profile-meta-text" style="margin-top: 6px; opacity: 0.8;">
-                    <i class="bi bi-geo-alt-fill"></i>
-                    {{ $isEmployer ? 'Makati, PH' : 'Manila, PH' }}
-                </p>
+                @if ($user->location)
+                    <p class="profile-meta-text" style="margin-top: 6px; opacity: 0.8;">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        {{ $user->location }}
+                    </p>
+                @endif
             </div>
 
-            <a href="{{ url('/profile/edit') }}" class="btn btn-royal-primary">
+            <a href="{{ route('profile.edit') }}" class="btn btn-royal-primary">
                 <i class="bi bi-pencil-square me-2"></i>
                 Edit Profile
             </a>
@@ -200,39 +210,37 @@
         <hr class="custom-hr">
 
         <div class="profile-section-grid">
-
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-person-lines-fill"></i>
                     {{ $isEmployer ? 'About Us' : 'About' }}
                 </h3>
                 <p class="body-text">
-                    {{ $isEmployer
-                        ? 'Nova Studio is a product design and development company focused on building modern digital experiences for growing businesses.'
-                        : 'Passionate developer with 3+ years of experience in web technologies, software development, and problem-solving. Skilled in creating modern, responsive, and user-friendly applications.' }}
+                    {{ $user->bio ?: 'No bio added yet.' }}
                 </p>
             </div>
 
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-envelope-paper-fill"></i>
-                    {{ $isEmployer ? 'Contact Information' : 'Contact Information' }}
+                    Contact Information
                 </h3>
-
                 <div class="contact-item">
                     <i class="bi bi-envelope-fill contact-icon"></i>
-                    <span>{{ $isEmployer ? 'hello@novastudio.com' : 'juan@email.com' }}</span>
+                    <span>{{ $user->email }}</span>
                 </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-telephone-fill contact-icon"></i>
-                    <span>{{ $isEmployer ? '+63 917 123 4567' : '+63 900 000 0000' }}</span>
-                </div>
-
-                <div class="contact-item">
-                    <i class="bi bi-geo-alt-fill contact-icon"></i>
-                    <span>{{ $isEmployer ? 'Makati, Philippines' : 'Manila, Philippines' }}</span>
-                </div>
+                @if ($user->phone)
+                    <div class="contact-item">
+                        <i class="bi bi-telephone-fill contact-icon"></i>
+                        <span>{{ $user->phone }}</span>
+                    </div>
+                @endif
+                @if ($user->location)
+                    <div class="contact-item">
+                        <i class="bi bi-geo-alt-fill contact-icon"></i>
+                        <span>{{ $user->location }}</span>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -244,23 +252,9 @@
                     <i class="bi bi-star-fill"></i>
                     Company Reviews
                 </h3>
-                <p class="body-text" style="margin-bottom: 24px;">
-                    See feedback from applicants and keep your employer presence strong.
-                </p>
-                <div style="display:grid; gap:14px;">
-                    <div class="card" style="border-left:4px solid var(--royal-blue-bright);">
-                        <strong style="display:block; color:var(--royal-blue-deep); margin-bottom:6px;">4.8 / 5</strong>
-                        <span style="color:var(--royal-blue-main);">Great communication and clear job posts.</span>
-                    </div>
-                    <div class="card" style="border-left:4px solid var(--royal-blue-main);">
-                        <strong style="display:block; color:var(--royal-blue-deep); margin-bottom:6px;">4.6 / 5</strong>
-                        <span style="color:var(--royal-blue-main);">Fast hiring process and responsive team.</span>
-                    </div>
-                </div>
+                <p class="body-text">Company review tracking is coming soon.</p>
             </div>
         @else
-            @php($resumeUrl = session('resume_url'))
-            @php($resumeName = session('resume_name', 'Uploaded Resume'))
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-file-earmark-person-fill"></i>
@@ -269,37 +263,37 @@
                 <p class="body-text" style="margin-bottom: 24px;">
                     Upload and manage your resume to make it easier for employers to view your qualifications.
                 </p>
-                <a href="{{ $resumeUrl ?: '#' }}" class="btn btn-royal-outline" @if(! $resumeUrl) aria-disabled="true" style="pointer-events:none;opacity:.6;" @endif>
-                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-                    {{ $resumeUrl ? 'Download Resume' : 'No Resume Uploaded' }}
-                </a>
-                @if ($resumeUrl)
-                    <div class="body-text" style="margin-top: 12px; font-size: 15px; opacity: .9;">
-                        Current file: {{ $resumeName }}
-                    </div>
+                @if ($user->resume_path)
+                    <a href="{{ Storage::disk('public')->url($user->resume_path) }}" target="_blank" class="btn btn-royal-outline">
+                        <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+                        Download Resume
+                    </a>
+                @else
+                    <span class="btn btn-royal-outline" style="opacity:.6; pointer-events:none;">
+                        <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+                        No Resume Uploaded
+                    </span>
                 @endif
             </div>
-        @endif
 
-        <hr class="custom-hr">
+            <hr class="custom-hr">
 
-        @if (! $isEmployer)
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-stars"></i>
                     Skills
                 </h3>
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
-                    <span class="skill-badge">HTML</span>
-                    <span class="skill-badge">CSS</span>
-                    <span class="skill-badge">JavaScript</span>
-                    <span class="skill-badge">PHP</span>
-                    <span class="skill-badge">Laravel</span>
-                    <span class="skill-badge">MySQL</span>
-                </div>
+                @if ($user->skills)
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
+                        @foreach (explode(',', $user->skills) as $skill)
+                            <span class="skill-badge">{{ trim($skill) }}</span>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="body-text">No skills added yet.</p>
+                @endif
             </div>
         @endif
-
     </div>
 </div>
 @endsection

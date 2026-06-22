@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('location');
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();
-            $table->string('type')->default('Full-time'); // Full-time, Part-time, Contract, Internship
-            $table->string('experience_level')->default('Entry Level'); // Entry Level, Mid Level, Senior
-            $table->string('status')->default('pending'); // pending, approved, rejected
+            $table->string('type')->default('Full-time'); //fFull-time, part-time, contractual, internship
+            $table->string('experience_level')->default('Entry Level'); //entry level, mid level, senior level
+            $table->string('posting_status')->default('live'); //for empoyers: live, screening, closed
+            $table->string('status')->default('pending'); //for admins: pending, approved, rejected
             $table->timestamps();
         });
     }

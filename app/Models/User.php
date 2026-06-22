@@ -19,9 +19,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'role',
-        'email',
+        'name', 'email', 'role',
+        'bio', 'phone', 'location',
+        'education', 'experience',
+        'skills', 'resume_path',
+        'account_status',
         'password',
     ];
 
@@ -50,5 +52,13 @@ class User extends Authenticatable
 
     public function jobListings(){
         return $this->hasMany(JobListing::class, 'employer_id');
+    }
+
+    public function applications(){
+        return $this->hasMany(Application::class, 'applicant_id');
+    }
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
 }
