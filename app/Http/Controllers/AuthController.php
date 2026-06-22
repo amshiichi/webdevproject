@@ -10,7 +10,7 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    // Handles Login, Registration, and Logout for all users.
+    //handles login, registration, and logout for all users
 
     public function showLogin(){
         return view('auth.login');
@@ -34,7 +34,7 @@ class AuthController extends Controller
         $user = Auth::user();
         session(['account_role' => $user->role]);
 
-        // Redirect based on role
+        //redirect based on role
         if($user->role === 'admin'){
             return redirect()->route('admin.dashboard');
         } elseif($user->role === 'employer'){
@@ -53,9 +53,9 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:50'],
             'role' => ['required', 'in:applicant,employer'],
             'email' => ['required', 'string', 'email', 'max:50', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::min(8)]
+            'password' => ['required', 'confirmed', Password::min(8)],
+            'terms' => ['required', 'accepted']
         ]);
-
 
         $user = User::create([
             'name' => $validated['name'],

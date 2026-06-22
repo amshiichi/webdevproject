@@ -370,10 +370,10 @@
             <h2 style="margin:0;font-family:'Poppins',sans-serif;color:var(--royal-blue-deep);font-size:1.7rem;">At a glance</h2>
             <p style="margin:0;color:var(--muted);">A quick overview of your activity.</p>
             <div class="stats-grid">
-                <div class="stat"><strong>12</strong><span>saved roles</span></div>
-                <div class="stat"><strong>5</strong><span>applications</span></div>
-                <div class="stat"><strong>3</strong><span>interviews</span></div>
-                <div class="stat"><strong>8</strong><span>alerts</span></div>
+                <div class="stat"><strong>{{ $jobs->count() }}</strong><span>available roles</span></div>
+                <div class="stat"><strong>{{ $applicationsCount }}</strong><span>applications</span></div>
+                <div class="stat"><strong>{{ $interviewCount }}</strong><span>interviews</span></div>
+                <div class="stat"><strong>{{ $notificationCount }}</strong><span>alerts</span></div>
             </div>
         </aside>
     </div>

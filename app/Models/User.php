@@ -58,7 +58,7 @@ class User extends Authenticatable
         return $this->hasMany(Application::class, 'applicant_id');
     }
 
-    public function notifications(){
-        return $this->hasMany(Notification::class);
+    public function alerts(){
+        return $this->hasMany(Notification::class, 'user_id');
     }
 }

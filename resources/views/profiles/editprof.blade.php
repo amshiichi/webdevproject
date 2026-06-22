@@ -216,17 +216,17 @@ The form to update details or upload a new PDF resume.
 
             <div class="field">
                 <label>{{ $isEmployer ? 'Company Name' : 'Full Name' }}</label>
-                <input type="text" name="name" value="{{ $user->name ?? '' }}" placeholder="{{ $isEmployer ? 'Your company name' : 'Your full name' }}">
+                <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}" placeholder="{{ $isEmployer ? 'Your company name' : 'Your full name' }}">
             </div>
 
             <div class="field">
                 <label>Email Address</label>
-                <input type="email" name="email" value="{{ $user->email ?? '' }}" placeholder="you@example.com">
+                <input type="email" name="email" value="{{ old('email', $user->email ?? '') }}" placeholder="you@example.com">
             </div>
 
             <div class="field">
                 <label>{{ $isEmployer ? 'About Us' : 'Bio' }}</label>
-                <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ $user->bio ?? '' }}</textarea>
+                <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ old('bio', $user->bio ?? '') }}</textarea>
             </div>
 
             <div class="field">
@@ -268,15 +268,15 @@ The form to update details or upload a new PDF resume.
                             <div class="ic">⬆</div>
                             <div class="upload-text">Click to upload or drag & drop</div>
                             <div class="hint">PDF up to 5MB</div>
-                            <input type="file" name="resume" accept="application/pdf" style="display: none;">
+                            <input id="resume-input" type="file" name="resume" accept="application/pdf" style="display: none;">
                         </label>
-                        @if($user->resume_path)
-                            <div style="font-size:14px;color:#475569;">
+                        <div id="resume-file-name" style="font-size:14px;color:#475569;">
+                            @if($user->resume_path)
                                 Current resume: <strong>{{ basename($user->resume_path) }}</strong>
-                            </div>
-                        @else
-                            <div style="font-size:14px;color:#64748b;">No resume uploaded yet.</div>
-                        @endif
+                            @else
+                                No resume uploaded yet.
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -289,4 +289,21 @@ The form to update details or upload a new PDF resume.
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('resume-input');
+        const fileNameDisplay = document.getElementById('resume-file-name');
+
+        if (!fileInput || !fileNameDisplay) return;
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file) {
+                fileNameDisplay.innerHTML = 'Selected file: <strong>' + file.name + '</strong> — ready to save.';
+            } else {
+                fileNameDisplay.innerHTML = '{{ $user->resume_path ? "Current resume: <strong>" . basename($user->resume_path) . "</strong>" : "No resume uploaded yet." }}';
+            }
+        });
+    });
+</script>
 @endsection

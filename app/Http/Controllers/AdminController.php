@@ -19,6 +19,7 @@ class AdminController extends Controller
         
         return view('admin.dashboard', compact('pendingJobs', 'approvedJobs', 'rejectedJobs')); 
     }
+    
     public function moderateJob(Request $request, $id){
         $job = JobListing::findOrFail($id);
 

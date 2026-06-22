@@ -462,20 +462,20 @@
                         <form class="search-form" action="{{ route('jobs.public') }}" method="GET">
                             <label class="field" aria-label="Search jobs">
                                 <i class="bi bi-search"></i>
-                                <input type="text" name="q" placeholder="Search jobs, companies, or skills">
+                                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search jobs, companies, or skills">
                             </label>
                             <label class="field" aria-label="Location">
                                 <i class="bi bi-geo-alt-fill"></i>
-                                <input type="text" name="location" placeholder="Manila, Remote, Cebu">
+                                <input type="text" name="location" value="{{ request('location') }}" placeholder="Manila, Remote, Cebu">
                             </label>
                             <label class="field" aria-label="Job type">
                                 <i class="bi bi-funnel-fill"></i>
                                 <select name="type">
                                     <option value="">All roles</option>
-                                    <option>Full-time</option>
-                                    <option>Part-time</option>
-                                    <option>Contract</option>
-                                    <option>Internship</option>
+                                    <option value="full-time" {{ request('type') === 'full-time' ? 'selected' : '' }}>Full-time</option>
+                                    <option value="part-time" {{ request('type') === 'part-time' ? 'selected' : '' }}>Part-time</option>
+                                    <option value="contract" {{ request('type') === 'contract' ? 'selected' : '' }}>Contract</option>
+                                    <option value="internship" {{ request('type') === 'internship' ? 'selected' : '' }}>Internship</option>
                                 </select>
                             </label>
                             <button class="button button-primary" type="submit"><i class="bi bi-arrow-right-circle"></i> Search</button>

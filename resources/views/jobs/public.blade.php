@@ -111,6 +111,15 @@
         outline: none;
     }
 
+    .hero-search select {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 999px;
+        padding: 12px 16px;
+        border: 1px solid rgba(255,255,255,0.12);
+        font: inherit;
+    }
+
     .hero-search input::placeholder {
         color: rgba(255, 255, 255, 0.72);
     }
@@ -265,7 +274,7 @@
             </p>
 
             <form action="{{ route('jobs.public') }}" method="GET" class="hero-search">
-                <input type="text" name="q" placeholder="Search job title, company, or location">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search job title, company, or location">
                 <button class="button button-primary" type="submit">Search Jobs</button>
             </form>
 

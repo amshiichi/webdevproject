@@ -43,6 +43,16 @@ show.blade
         <h2 style="margin-top:22px">Requirements</h2>
         <p>{{ $job->requirements ?? 'Placeholder requirements list.' }}</p>
 
+        @if ($errors->any())
+            <div style="background:#fee2e2;border:1px solid #fca5a5;color:#b91c1c;padding:14px 18px;border-radius:12px;margin-bottom:18px;">
+                <ul style="margin:0;padding-left:18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('applications.store', $job->id ?? 1) }}" method="POST" class="apply-bar">
             @csrf
             <button type="submit" class="btn-apply">Apply Now →</button>

@@ -102,6 +102,11 @@
         font: inherit;
     }
 
+    .filters select option {
+        color: var(--royal-blue-deep);
+        background: #fff;
+    }
+
     .filters input::placeholder { color: rgba(255,255,255,0.72); }
 
     .filters-row {
@@ -291,19 +296,19 @@
             </p>
 
             <form class="filters" action="{{ route('jobs.applicant') }}" method="GET">
-                <input type="text" name="q" placeholder="Search by role or company">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search by role or company">
                 <div class="filters-row">
                     <select name="location">
-                        <option>All locations</option>
-                        <option>Remote</option>
-                        <option>Manila</option>
-                        <option>Cebu</option>
+                        <option value="">All locations</option>
+                        <option value="Remote" {{ request('location') === 'Remote' ? 'selected' : '' }}>Remote</option>
+                        <option value="Manila" {{ request('location') === 'Manila' ? 'selected' : '' }}>Manila</option>
+                        <option value="Cebu" {{ request('location') === 'Cebu' ? 'selected' : '' }}>Cebu</option>
                     </select>
                     <select name="type">
-                        <option>All job types</option>
-                        <option>Full-time</option>
-                        <option>Part-time</option>
-                        <option>Contract</option>
+                        <option value="">All job types</option>
+                        <option value="full-time" {{ request('type') === 'full-time' ? 'selected' : '' }}>Full-time</option>
+                        <option value="part-time" {{ request('type') === 'part-time' ? 'selected' : '' }}>Part-time</option>
+                        <option value="contract" {{ request('type') === 'contract' ? 'selected' : '' }}>Contract</option>
                     </select>
                 </div>
                 <button class="button button-primary" type="submit">Search Applicant Jobs</button>

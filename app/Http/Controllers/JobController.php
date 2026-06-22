@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobListing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,13 +11,7 @@ class JobController extends Controller
 {
     //publicJobs: Displays approved jobs for public browsing (unauthenticated or non-applicants)
     
-    //applicantJobs: Displays approved jobs for authenticated applicants with personalized experience
-    
-    //index: Displays the applicant home page.
-
-    // show: Views a specific job details.
-
-    // create / store / edit / update / destroy: Handled here but restricted to Employers via middleware.
+    //crud is handled here but restricted to employers only via middleware
 
     public function publicJobs(Request $request){
         $query = JobListing::where('status', 'approved');
@@ -97,15 +92,22 @@ class JobController extends Controller
             $query->where('location', 'like', '%' . $request->location . '%');
         }
 
-        if ($request->filled('type')) {
+        if ($request->filled('type')){
             $query->where('type', $request->type);
         }
 
-        if ($request->filled('experience_level')) {
-            $query->where('experience_level', $request->experience_level);
-        }
-
         $jobs = $query->latest()->get();
+
+        if(Auth::check() && Auth::user()->role === 'applicant'){
+            /** @var User $user */
+            $user = Auth::user();
+            $applications = $user->applications()->with('jobListing')->latest()->get();
+            $applicationsCount = $applications->count();
+            $interviewCount = $applications->where('status', 'interview')->count();
+            $notificationCount = $user->alerts()->count();
+
+            return view('applicant.home', compact('jobs', 'applicationsCount', 'interviewCount', 'notificationCount'));
+        }
 
         return view('jobs.index', compact('jobs'));
     }

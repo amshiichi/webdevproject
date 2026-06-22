@@ -243,12 +243,12 @@
                 <div class="field-grid">
                     <div class="field">
                         <label for="name">Full name</label>
-                        <input id="name" type="text" name="name" placeholder="Jane Doe" required>
+                        <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Jane Doe" required>
                     </div>
 
                     <div class="field">
                         <label for="email">Email address</label>
-                        <input id="email" type="email" name="email" placeholder="you@example.com" required>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com" required>
                     </div>
                 </div>
 
@@ -267,14 +267,14 @@
                 <div class="field">
                     <label for="role">Role</label>
                     <select id="role" name="role">
-                        <option value="applicant">Applicant</option>
-                        <option value="employer">Employer</option>
+                        <option value="applicant" {{ old('role') === 'applicant' ? 'selected' : '' }}>Applicant</option>
+                        <option value="employer" {{ old('role') === 'employer' ? 'selected' : '' }}>Employer</option>
                     </select>
                 </div>
 
                 <div class="auth-meta">
                     <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:600; color:#475569;">
-                        <input type="checkbox" name="terms" style="width:auto; margin:0;">
+                        <input type="checkbox" name="terms" style="width:auto; margin:0;" {{ old('terms') ? 'checked' : '' }}>
                         I agree to the terms
                     </label>
                     <a href="#">Need help?</a>

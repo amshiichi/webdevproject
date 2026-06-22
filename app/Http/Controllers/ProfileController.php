@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    //show: Displays the profile/resume.
-
-    // edit / update: Editing profile details or uploading a resume file.
-
     public function show(){
         return view('profiles.showprof', ['user' => Auth::user()]);
     }
