@@ -381,7 +381,7 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
                     <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
                         <i class="bi bi-clock-history me-2"></i> Posted 2 days ago
                     </small>
-                    <a href="#" class="btn btn-royal-primary">View Job</a>
+                    <a href="{{ route('jobs.show', 1) }}" class="btn btn-royal-primary">View Job</a>
                 </div>
             </div>
 
@@ -424,7 +424,7 @@ The Homepage. Contains the search input, filter sidebar, and the list of jobs.
                     <small style="color:var(--royal-blue-main); font-weight: 500; font-size: 18px;">
                         <i class="bi bi-clock-history me-2"></i> Posted today
                     </small>
-                    <a href="#" class="btn btn-royal-primary">View Job</a>
+                    <a href="{{ route('jobs.show', 2) }}" class="btn btn-royal-primary">View Job</a>
                 </div>
             </div>
 

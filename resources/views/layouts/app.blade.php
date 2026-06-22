@@ -28,6 +28,15 @@ and a dynamic navigation bar that changes based on Auth::user()->role
   .nav ul a{font-size:22px;font-weight:700;color:#e0e7ff}
   .nav ul a:hover{color:#fff}
   .nav .cta{background:#fff;color:var(--rb-700);padding:8px 18px;border-radius:30px;font-weight:600;font-size:18px}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  .nav-menu{position:relative}
+  .nav-menu summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.12);color:#fff}
+  .nav-menu summary::-webkit-details-marker{display:none}
+  .nav-menu summary:hover{background:rgba(255,255,255,.18)}
+  .nav-menu-panel{position:absolute;right:0;top:58px;min-width:220px;background:#fff;border-radius:18px;padding:10px;box-shadow:0 20px 45px rgba(15,23,42,.18);z-index:20}
+  .nav-menu-panel a,.nav-menu-panel button{width:100%;display:flex;align-items:center;gap:10px;padding:12px 14px;border:0;background:none;border-radius:12px;font:inherit;font-weight:600;color:var(--ink);text-align:left;cursor:pointer}
+  .nav-menu-panel a:hover,.nav-menu-panel button:hover{background:var(--rb-50);color:var(--rb-700)}
+  .nav-menu-panel form{margin:0}
 
   .wrap{max-width:1200px;margin:0 auto;padding:40px 24px}
 
@@ -60,14 +69,60 @@ and a dynamic navigation bar that changes based on Auth::user()->role
 <body>
 
 <nav class="nav">
-  <div class="logo">Good Job 8</div>
-  <ul>
-    <li><a href="{{ url('/') }}">Home</a></li>
-    <li><a href="{{ route('jobs.index') }}">Jobs</a></li>
-    <li><a href="{{ url('/applications') }}">Applications</a></li>
-    <li><a href="{{ url('/profile') }}">Profile</a></li>
-  </ul>
-  <a href="{{ url('/login') }}" class="cta">Get Started</a>
+  <div class="logo">ApplyHub</div>
+  @if (request()->routeIs('login', 'register'))
+    <ul>
+      <li><a href="{{ url('/') }}">Home</a></li>
+      <li><a href="{{ route('jobs.public') }}">Jobs</a></li>
+    </ul>
+  @elseif (session('account_role') === 'applicant')
+    <div class="nav-right">
+      <ul>
+        <li><a href="{{ route('jobs.index') }}">Home</a></li>
+        <li><a href="{{ route('jobs.applicant') }}">Jobs</a></li>
+        <li><a href="{{ route('applications.index') }}">Applications</a></li>
+        <li><a href="{{ route('notifications.index') }}">Notifications</a></li>
+        <li><a href="{{ route('profile.show') }}">Profile</a></li>
+      </ul>
+      <details class="nav-menu">
+        <summary aria-label="Open account menu">
+          <i class="bi bi-list" style="font-size:26px;"></i>
+        </summary>
+        <div class="nav-menu-panel" role="menu">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"><i class="bi bi-box-arrow-right"></i> Log Out</button>
+          </form>
+        </div>
+      </details>
+    </div>
+  @elseif (session('account_role') === 'employer')
+    <div class="nav-right">
+      <ul>
+        <li><a href="{{ route('employer.home') }}">Home</a></li>
+        <li><a href="{{ route('jobs.hub') }}">Job</a></li>
+        <li><a href="{{ route('applications.index') }}">Applications</a></li>
+        <li><a href="{{ route('profile.show') }}">Profile</a></li>
+      </ul>
+      <details class="nav-menu">
+        <summary aria-label="Open account menu">
+          <i class="bi bi-list" style="font-size:26px;"></i>
+        </summary>
+        <div class="nav-menu-panel" role="menu">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"><i class="bi bi-box-arrow-right"></i> Log Out</button>
+          </form>
+        </div>
+      </details>
+    </div>
+  @else
+    <ul>
+      <li><a href="{{ url('/') }}">Home</a></li>
+      <li><a href="{{ route('jobs.public') }}">Jobs</a></li>
+    </ul>
+    <a href="{{ url('/login') }}" class="cta">Get Started</a>
+  @endif
 </nav>
 
 @yield('content')

@@ -45,6 +45,7 @@ A shared file used for both creating and editing a job post (Employer only).
         font-weight: 500;
     }
 
+
     .field {
         margin-bottom: 28px; 
     }
@@ -145,12 +146,15 @@ A shared file used for both creating and editing a job post (Employer only).
         background: var(--royal-blue-light);
         border-color: var(--royal-blue-main);
     }
+
 </style>
 
 <div class="form-wrap">
     <div class="form-card">
         <h1>{{ isset($job) ? 'Edit Job Posting' : 'Create a New Job Posting' }}</h1>
         <div class="sub">Fill in the details below to {{ isset($job) ? 'update' : 'publish' }} this opportunity.</div>
+
+        
 
         <form method="POST" action="{{ isset($job) ? route('jobs.update', $job->id) : route('jobs.store') }}">
             @csrf

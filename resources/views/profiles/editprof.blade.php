@@ -192,11 +192,12 @@ The form to update details or upload a new PDF resume.
 
 <div class="ep-wrap">
     <div class="ep-card">
+        @php($isEmployer = session('account_role') === 'employer')
         <div class="ep-head">
             <div class="ep-avatar">{{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}</div>
             <div>
-                <h1>Edit Profile</h1>
-                <div class="sub">Update your details and resume.</div>
+                <h1>{{ $isEmployer ? 'Edit Company Profile' : 'Edit Profile' }}</h1>
+                <div class="sub">{{ $isEmployer ? 'Update your company details and reviews.' : 'Update your details and resume.' }}</div>
             </div>
         </div>
 
@@ -205,8 +206,8 @@ The form to update details or upload a new PDF resume.
             @method('PUT')
 
             <div class="field">
-                <label>Full Name</label>
-                <input type="text" name="name" value="{{ $user->name ?? '' }}" placeholder="Your full name">
+                <label>{{ $isEmployer ? 'Company Name' : 'Full Name' }}</label>
+                <input type="text" name="name" value="{{ $user->name ?? '' }}" placeholder="{{ $isEmployer ? 'Your company name' : 'Your full name' }}">
             </div>
 
             <div class="field">
@@ -215,19 +216,26 @@ The form to update details or upload a new PDF resume.
             </div>
 
             <div class="field">
-                <label>Bio</label>
-                <textarea name="bio" placeholder="Tell employers about yourself...">{{ $user->bio ?? '' }}</textarea>
+                <label>{{ $isEmployer ? 'About Us' : 'Bio' }}</label>
+                <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ $user->bio ?? '' }}</textarea>
             </div>
 
-            <div class="field">
-                <label>Resume (PDF)</label>
-                <label class="file-drop" style="display: block; cursor: pointer;">
-                    <div class="ic">⬆</div>
-                    <div class="upload-text">Click to upload or drag & drop</div>
-                    <div class="hint">PDF up to 5MB</div>
-                    <input type="file" name="resume" accept="application/pdf" style="display: none;">
-                </label>
-            </div>
+            @if ($isEmployer)
+                <div class="field">
+                    <label>Company Reviews</label>
+                    <textarea name="reviews" placeholder="Add notes or highlights from applicant reviews..."></textarea>
+                </div>
+            @else
+                <div class="field">
+                    <label>Resume (PDF)</label>
+                    <label class="file-drop" style="display: block; cursor: pointer;">
+                        <div class="ic">⬆</div>
+                        <div class="upload-text">Click to upload or drag & drop</div>
+                        <div class="hint">PDF up to 5MB</div>
+                        <input type="file" name="resume" accept="application/pdf" style="display: none;">
+                    </label>
+                </div>
+            @endif
 
             <div class="actions">
                 <a href="{{ route('profile.show') }}" class="btn btn-ghost">Cancel</a>
