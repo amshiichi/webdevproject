@@ -169,6 +169,7 @@
 
 <div class="profile-wrapper">
     <div class="profile-card">
+        @php($isEmployer = session('account_role') === 'employer')
 
         <div style="display:flex; gap:32px; align-items:center; flex-wrap:wrap;">
             
@@ -178,17 +179,15 @@
 
             <div style="flex: 1;">
                 <h1 class="profile-name">
-                    {{-- $user->name --}}
-                    Juan Dela Cruz
+                    {{ $isEmployer ? 'Nova Studio' : 'Juan Dela Cruz' }}
                 </h1>
                 <p class="profile-meta-text">
                     <i class="bi bi-briefcase-fill"></i>
-                    {{-- $user->role --}}
-                    Applicant
+                    {{ $isEmployer ? 'Employer' : 'Applicant' }}
                 </p>
                 <p class="profile-meta-text" style="margin-top: 6px; opacity: 0.8;">
                     <i class="bi bi-geo-alt-fill"></i>
-                    Manila, PH
+                    {{ $isEmployer ? 'Makati, PH' : 'Manila, PH' }}
                 </p>
             </div>
 
@@ -205,71 +204,101 @@
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-person-lines-fill"></i>
-                    About
+                    {{ $isEmployer ? 'About Us' : 'About' }}
                 </h3>
                 <p class="body-text">
-                    {{-- $user->about --}}
-                    Passionate developer with 3+ years of experience in web technologies,
-                    software development, and problem-solving. Skilled in creating modern,
-                    responsive, and user-friendly applications.
+                    {{ $isEmployer
+                        ? 'Nova Studio is a product design and development company focused on building modern digital experiences for growing businesses.'
+                        : 'Passionate developer with 3+ years of experience in web technologies, software development, and problem-solving. Skilled in creating modern, responsive, and user-friendly applications.' }}
                 </p>
             </div>
 
             <div>
                 <h3 class="section-title">
                     <i class="bi bi-envelope-paper-fill"></i>
-                    Contact Information
+                    {{ $isEmployer ? 'Contact Information' : 'Contact Information' }}
                 </h3>
 
                 <div class="contact-item">
                     <i class="bi bi-envelope-fill contact-icon"></i>
-                    <span>{{-- $user->email --}} juan@email.com</span>
+                    <span>{{ $isEmployer ? 'hello@novastudio.com' : 'juan@email.com' }}</span>
                 </div>
 
                 <div class="contact-item">
                     <i class="bi bi-telephone-fill contact-icon"></i>
-                    <span>{{-- $user->phone --}} +63 900 000 0000</span>
+                    <span>{{ $isEmployer ? '+63 917 123 4567' : '+63 900 000 0000' }}</span>
                 </div>
 
                 <div class="contact-item">
                     <i class="bi bi-geo-alt-fill contact-icon"></i>
-                    <span>Manila, Philippines</span>
+                    <span>{{ $isEmployer ? 'Makati, Philippines' : 'Manila, Philippines' }}</span>
                 </div>
             </div>
         </div>
 
         <hr class="custom-hr">
 
-        <div>
-            <h3 class="section-title">
-                <i class="bi bi-file-earmark-person-fill"></i>
-                Resume
-            </h3>
-            <p class="body-text" style="margin-bottom: 24px;">
-                Upload and manage your resume to make it easier for employers to view your qualifications.
-            </p>
-            <a href="#" class="btn btn-royal-outline">
-                <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-                Download Resume
-            </a>
-        </div>
+        @if ($isEmployer)
+            <div>
+                <h3 class="section-title">
+                    <i class="bi bi-star-fill"></i>
+                    Company Reviews
+                </h3>
+                <p class="body-text" style="margin-bottom: 24px;">
+                    See feedback from applicants and keep your employer presence strong.
+                </p>
+                <div style="display:grid; gap:14px;">
+                    <div class="card" style="border-left:4px solid var(--royal-blue-bright);">
+                        <strong style="display:block; color:var(--royal-blue-deep); margin-bottom:6px;">4.8 / 5</strong>
+                        <span style="color:var(--royal-blue-main);">Great communication and clear job posts.</span>
+                    </div>
+                    <div class="card" style="border-left:4px solid var(--royal-blue-main);">
+                        <strong style="display:block; color:var(--royal-blue-deep); margin-bottom:6px;">4.6 / 5</strong>
+                        <span style="color:var(--royal-blue-main);">Fast hiring process and responsive team.</span>
+                    </div>
+                </div>
+            </div>
+        @else
+            @php($resumeUrl = session('resume_url'))
+            @php($resumeName = session('resume_name', 'Uploaded Resume'))
+            <div>
+                <h3 class="section-title">
+                    <i class="bi bi-file-earmark-person-fill"></i>
+                    Resume
+                </h3>
+                <p class="body-text" style="margin-bottom: 24px;">
+                    Upload and manage your resume to make it easier for employers to view your qualifications.
+                </p>
+                <a href="{{ $resumeUrl ?: '#' }}" class="btn btn-royal-outline" @if(! $resumeUrl) aria-disabled="true" style="pointer-events:none;opacity:.6;" @endif>
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+                    {{ $resumeUrl ? 'Download Resume' : 'No Resume Uploaded' }}
+                </a>
+                @if ($resumeUrl)
+                    <div class="body-text" style="margin-top: 12px; font-size: 15px; opacity: .9;">
+                        Current file: {{ $resumeName }}
+                    </div>
+                @endif
+            </div>
+        @endif
 
         <hr class="custom-hr">
 
-        <div>
-            <h3 class="section-title">
-                <i class="bi bi-stars"></i>
-                Skills
-            </h3>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
-                <span class="skill-badge">HTML</span>
-                <span class="skill-badge">CSS</span>
-                <span class="skill-badge">JavaScript</span>
-                <span class="skill-badge">PHP</span>
-                <span class="skill-badge">Laravel</span>
-                <span class="skill-badge">MySQL</span>
+        @if (! $isEmployer)
+            <div>
+                <h3 class="section-title">
+                    <i class="bi bi-stars"></i>
+                    Skills
+                </h3>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
+                    <span class="skill-badge">HTML</span>
+                    <span class="skill-badge">CSS</span>
+                    <span class="skill-badge">JavaScript</span>
+                    <span class="skill-badge">PHP</span>
+                    <span class="skill-badge">Laravel</span>
+                    <span class="skill-badge">MySQL</span>
+                </div>
             </div>
-        </div>
+        @endif
 
     </div>
 </div>

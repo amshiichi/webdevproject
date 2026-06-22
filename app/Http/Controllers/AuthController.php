@@ -25,7 +25,15 @@ class AuthController extends Controller
 
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
-            return redirect()->route('jobs.index'); 
+        }
+
+        $user = Auth::user();
+        if($user->role === 'employer'){
+            session(['account_role' => 'employer']);
+            return redirect()->route('employer.home');
+        }else{
+            session(['account_role' => 'applicant']);
+            return redirect()->route('jobs.index');
         }
 
         return back()->withErrors([
@@ -55,14 +63,20 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect()->route('jobs.index');
+        session(['account_role' => $validated['role']]);
+        return $validated['role'] === 'employer'
+            ? redirect()->route('employer.home')
+            : redirect()->route('jobs.index');
     }
 
     public function logout(Request $request){
         Auth::logout();
 
+        session()->forget('account_role');
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login'); }
+        return redirect()->route('login');
+    }
 }

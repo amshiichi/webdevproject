@@ -8,21 +8,25 @@ use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
-    //index: Displays the job list with search filters (Public/Applicant).
+    //index: Displays the applicant home page.
 
     // show: Views a specific job details.
 
     // create / store / edit / update / destroy: Handled here but restricted to Employers via middleware.
 
     public function index(Request $request){
+        if (session('account_role') === 'employer') {
+            return view('employer.home');
+        }
+
         $query = JobListing::where('status', 'approved');
 
         //search filter
-
-        if($request->filled('keyword')){
-            $query->where('title', 'like', '%' . $request->keyword . '%')
-                  ->orwhere('company', 'like', '%' . $request->keyword . '%');
-        
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('company', 'like', '%' . $request->keyword . '%');
+            });
         }
 
         if($request->filled('location')){
@@ -42,7 +46,17 @@ class JobController extends Controller
         return view('jobs.index', ['jobs' => $jobs]);
     }
 
+    //show the jobs listed by the logged in employer
+    public function hub(){
+        $jobs = JobListing::where('employer_id', Auth::id())->latest()->get();
+        
+        return view('employer.hub', ['jobs' => $jobs]);
+    }
+
     public function show($id){
+        if (!session()->has('account_role')) {
+            return redirect()->route('login');
+        }
         $job = JobListing::findOrFail($id);
         return view('jobs.show', ['job' => $job]);
     }
@@ -66,7 +80,7 @@ class JobController extends Controller
             'salary_max' => $validated['salary_max'] ?? null,
             'type' => $validated['type'],
             'experience_level' => $validated['experience_level'],
-            'status' => 'pending'
+            'status' => 'pending' //admin must approve first (safe from job scams but can be annoying to employers)
         ]);
 
         return redirect()->route('jobs.index');

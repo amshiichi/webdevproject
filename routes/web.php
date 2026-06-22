@@ -7,6 +7,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AdminController;
 
+Route::view('employer/home', 'employer.home')->name('employer.home');
+Route::view('/', 'landing')->name('landing');
+Route::view('notifications', 'notifications.index')->name('notifications.index');
+
 // Auth
 Route::get('login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login.submit');
@@ -15,18 +19,20 @@ Route::post('register', [AuthController::class, 'register'])->name('register.sub
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Jobs
+Route::view('jobs', 'jobs.public')->name('jobs.public');
+Route::view('applicant/jobs', 'jobs.applicant')->name('jobs.applicant');
 Route::get('home', [JobController::class, 'index'])->name('jobs.index');
 Route::get('job/show/{id}', [JobController::class, 'show'])->name('jobs.show');
 
 Route::middleware(['auth', 'role:employer'])->group(function(){
+    Route::get('job', [JobController::class, 'hub'])->name('jobs.hub');
+
     Route::get('job/create', [JobController::class, 'create'])->name('jobs.create');
     Route::post('job/create', [JobController::class, 'store'])->name('jobs.store');
-    Route::get('job/show/{id}', [JobController::class, 'show'])->name('jobs.show');
     Route::get('job/edit/{id}', [JobController::class, 'edit'])->name('jobs.edit');
     Route::post('job/edit/{id}', [JobController::class, 'update'])->name('jobs.update');
     Route::post('job/delete/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
 });
-
 
 // Profiles
 Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -37,6 +43,8 @@ Route::post('profile/edit', [ProfileController::class, 'update'])->name('profile
 Route::get('applications', [ApplicationController::class, 'index'])->name('applications.index');
 Route::post('job/apply/{id}', [ApplicationController::class, 'store'])->name('applications.store');
 Route::get('applications/review/{id}', [ApplicationController::class, 'review'])->name('applications.review');
+Route::get('applications/review/{jobId}/applicant/{applicantId}', [ApplicationController::class, 'applicant'])->name('applications.applicant');
+Route::get('applications/review/{jobId}/applicant/{applicantId}/resume', [ApplicationController::class, 'resume'])->name('applications.applicant.resume');
 Route::post('applications/review/{id}', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
 
 // Admin
