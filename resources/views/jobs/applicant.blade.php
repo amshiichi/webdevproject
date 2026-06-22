@@ -334,45 +334,31 @@
     </div>
 
     <div class="jobs-list">
+        @forelse($jobs as $job)
         <article class="job-card">
             <div class="job-main">
                 <div class="job-icon"><i class="bi bi-code-slash"></i></div>
                 <div>
-                    <h3 class="job-title">Frontend Developer</h3>
-                    <div class="company"><i class="bi bi-building"></i> Nova Studio</div>
-                    <p style="margin:0;color:var(--muted);">Built for applicants who want quick actions, profile matching, and a direct apply flow.</p>
+                    <h3 class="job-title">{{ $job->title }}</h3>
+                    <div class="company"><i class="bi bi-building"></i> {{ $job->company }}</div>
+                    <p style="margin:0;color:var(--muted);">{{ Str::limit($job->description, 100) }}</p>
                     <div class="job-meta">
-                        <span><i class="bi bi-geo-alt-fill"></i> Remote</span>
-                        <span><i class="bi bi-briefcase-fill"></i> Full-time</span>
-                        <span><i class="bi bi-shield-check"></i> Match score 92%</span>
+                        <span><i class="bi bi-geo-alt-fill"></i> {{ $job->location }}</span>
+                        <span><i class="bi bi-briefcase-fill"></i> {{ ucfirst($job->type) }}</span>
+                        <span><i class="bi bi-mortarboard-fill"></i> {{ ucfirst($job->experience_level) }} Level</span>
                     </div>
                 </div>
             </div>
             <div class="job-actions">
-                <span class="badge"><i class="bi bi-check2-circle"></i> Recommended</span>
-                <a class="button button-primary" href="{{ route('jobs.show', 1) }}">View & Apply</a>
+                <span class="badge"><i class="bi bi-check2-circle"></i> Available</span>
+                <a class="button button-primary" href="{{ route('jobs.show', $job->id) }}">View & Apply</a>
             </div>
         </article>
-
-        <article class="job-card">
-            <div class="job-main">
-                <div class="job-icon"><i class="bi bi-pencil-square"></i></div>
-                <div>
-                    <h3 class="job-title">UI/UX Designer</h3>
-                    <div class="company"><i class="bi bi-building"></i> Creative Studio</div>
-                    <p style="margin:0;color:var(--muted);">Focused on saved searches, alerts, and application tracking for logged-in users.</p>
-                    <div class="job-meta">
-                        <span><i class="bi bi-geo-alt-fill"></i> Manila</span>
-                        <span><i class="bi bi-briefcase-fill"></i> Contract</span>
-                        <span><i class="bi bi-bell-fill"></i> New alert</span>
-                    </div>
-                </div>
-            </div>
-            <div class="job-actions">
-                <span class="badge"><i class="bi bi-bookmark-check-fill"></i> Saved</span>
-                <a class="button button-primary" href="{{ route('jobs.show', 2) }}">View & Apply</a>
-            </div>
-        </article>
+        @empty
+        <div style="text-align: center; padding: 60px 20px; grid-column: 1/-1;">
+            <p style="color: var(--muted); font-size: 1.1rem;">No jobs found matching your criteria. Try adjusting your search filters.</p>
+        </div>
+        @endforelse
     </div>
 </div>
 @endsection

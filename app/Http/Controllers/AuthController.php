@@ -34,7 +34,14 @@ class AuthController extends Controller
         $user = Auth::user();
         session(['account_role' => $user->role]);
 
-        return $user->role === 'employer' ? redirect()->route('employer.home') : redirect()->route('jobs.index');
+        // Redirect based on role
+        if($user->role === 'admin'){
+            return redirect()->route('admin.dashboard');
+        } elseif($user->role === 'employer'){
+            return redirect()->route('employer.home');
+        } else {
+            return redirect()->route('jobs.index');
+        }
     }
 
     public function showRegister(){

@@ -286,45 +286,38 @@
         </div>
 
         <div class="grid-2">
+            @forelse($jobs as $job)
             <article class="job-card">
                 <div class="job-top">
                     <div>
-                        <h3 style="margin:0 0 10px;font-family:'Poppins',sans-serif;font-size:1.35rem;color:var(--royal-blue-deep);">Software Engineer</h3>
-                        <div class="company"><i class="bi bi-building"></i> TechCorp Inc.</div>
+                        <h3 style="margin:0 0 10px;font-family:'Poppins',sans-serif;font-size:1.35rem;color:var(--royal-blue-deep);">{{ $job->title }}</h3>
+                        <div class="company"><i class="bi bi-building"></i> {{ $job->company }}</div>
                     </div>
                     <div class="ghost-icon"><i class="bi bi-bookmark"></i></div>
                 </div>
                 <div class="meta">
-                    <span><i class="bi bi-geo-alt-fill"></i> Manila</span>
-                    <span><i class="bi bi-briefcase-fill"></i> Full-time</span>
-                    <span><i class="bi bi-cash-stack"></i> ₱45k - ₱60k</span>
+                    <span><i class="bi bi-geo-alt-fill"></i> {{ $job->location }}</span>
+                    <span><i class="bi bi-briefcase-fill"></i> {{ ucfirst($job->type) }}</span>
+                    @if($job->salary_min && $job->salary_max)
+                    <span><i class="bi bi-cash-stack"></i> ₱{{ number_format($job->salary_min) }} - ₱{{ number_format($job->salary_max) }}</span>
+                    @endif
                 </div>
-                <p style="margin:0;color:var(--muted);line-height:1.7;">Build and maintain scalable web applications using modern technologies and collaborate with cross-functional teams.</p>
+                <p style="margin:0;color:var(--muted);line-height:1.7;">{{ Str::limit($job->description, 120) }}</p>
                 <div class="job-actions">
-                    <small style="color:var(--royal-blue-bright);font-weight:700;"><i class="bi bi-lock-fill"></i> Login required to view</small>
-                    <a class="button button-primary" href="{{ route('login') }}">View Job</a>
+                    @if(Auth::check())
+                    <small style="color:var(--royal-blue-bright);font-weight:700;"><i class="bi bi-check-circle-fill"></i> Authenticated</small>
+                    <a class="button button-primary" href="{{ route('jobs.show', $job->id) }}">View Job</a>
+                    @else
+                    <small style="color:var(--royal-blue-bright);font-weight:700;"><i class="bi bi-lock-fill"></i> Login required to apply</small>
+                    <a class="button button-primary" href="{{ route('login') }}">Login to Apply</a>
+                    @endif
                 </div>
             </article>
-
-            <article class="job-card">
-                <div class="job-top">
-                    <div>
-                        <h3 style="margin:0 0 10px;font-family:'Poppins',sans-serif;font-size:1.35rem;color:var(--royal-blue-deep);">UI/UX Designer</h3>
-                        <div class="company"><i class="bi bi-building"></i> Creative Studio</div>
-                    </div>
-                    <div class="ghost-icon"><i class="bi bi-bookmark"></i></div>
-                </div>
-                <div class="meta">
-                    <span><i class="bi bi-geo-alt-fill"></i> Remote</span>
-                    <span><i class="bi bi-briefcase-fill"></i> Full-time</span>
-                    <span><i class="bi bi-cash-stack"></i> ₱40k - ₱55k</span>
-                </div>
-                <p style="margin:0;color:var(--muted);line-height:1.7;">Design intuitive user experiences and collaborate with developers to create modern digital products.</p>
-                <div class="job-actions">
-                    <small style="color:var(--royal-blue-bright);font-weight:700;"><i class="bi bi-lock-fill"></i> Login required to view</small>
-                    <a class="button button-primary" href="{{ route('register') }}">View Job</a>
-                </div>
-            </article>
+            @empty
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                <p style="color: var(--muted); font-size: 1.1rem;">No jobs available at the moment. Please try again later.</p>
+            </div>
+            @endforelse
         </div>
     </section>
 </div>

@@ -27,7 +27,15 @@ class ApplicationController extends Controller{
                 ->latest()
                 ->get();
 
-            return view('employer.dashboard', compact('jobs'));
+            $totalApplications = $jobs->sum('applications_count');
+            $shortlistedCount = Application::whereIn('job_listing_id', $jobs->pluck('id'))
+                ->where('status', 'interview')
+                ->count();
+            $hiredCount = Application::whereIn('job_listing_id', $jobs->pluck('id'))
+                ->where('status', 'hired')
+                ->count();
+
+            return view('employer.dashboard', compact('jobs', 'totalApplications', 'shortlistedCount', 'hiredCount'));
         }
 
         $applications = Application::where('applicant_id', $user->id)
@@ -70,7 +78,8 @@ class ApplicationController extends Controller{
             'link' => route('applications.review', $job->id)
         ]);
 
-        return redirect()->route('applications.index'); } //FLAG
+        return redirect()->route('applications.index');
+    }
 
 
     public function review($id){

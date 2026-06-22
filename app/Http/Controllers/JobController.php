@@ -8,11 +8,75 @@ use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
+    //publicJobs: Displays approved jobs for public browsing (unauthenticated or non-applicants)
+    
+    //applicantJobs: Displays approved jobs for authenticated applicants with personalized experience
+    
     //index: Displays the applicant home page.
 
     // show: Views a specific job details.
 
     // create / store / edit / update / destroy: Handled here but restricted to Employers via middleware.
+
+    public function publicJobs(Request $request){
+        $query = JobListing::where('status', 'approved');
+
+        //search filter
+        if ($request->filled('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->q . '%')
+                  ->orWhere('company', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        if($request->filled('location')){
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('experience_level')) {
+            $query->where('experience_level', $request->experience_level);
+        }
+
+        $jobs = $query->latest()->get();
+
+        return view('jobs.public', compact('jobs'));
+    }
+
+    public function applicantJobs(Request $request){
+        if(Auth::check() && Auth::user()->role !== 'applicant'){
+            abort(403, 'Forbidden: Only applicants can access this page.');
+        }
+
+        $query = JobListing::where('status', 'approved');
+
+        //search filter
+        if ($request->filled('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->q . '%')
+                  ->orWhere('company', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        if($request->filled('location')){
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('experience_level')) {
+            $query->where('experience_level', $request->experience_level);
+        }
+
+        $jobs = $query->latest()->get();
+
+        return view('jobs.applicant', compact('jobs'));
+    }
 
     public function index(Request $request){
         if(Auth::check() && Auth::user()->role === 'employer'){
@@ -53,6 +117,18 @@ class JobController extends Controller
         return view('employer.hub', compact('jobs'));
     }
 
+    public function employerHome(){
+        $user = Auth::user();
+        $totalJobs = JobListing::where('employer_id', $user->id)->count();
+        $pendingJobs = JobListing::where('employer_id', $user->id)->where('status', 'pending')->count();
+        $approvedJobs = JobListing::where('employer_id', $user->id)->where('status', 'approved')->count();
+        $applications = JobListing::where('employer_id', $user->id)
+            ->join('applications', 'job_listings.id', '=', 'applications.job_listing_id')
+            ->count();
+
+        return view('employer.home', compact('totalJobs', 'pendingJobs', 'approvedJobs', 'applications'));
+    }
+
     public function show($id){
         $job = JobListing::findOrFail($id);
         return view('jobs.show', compact('job'));
@@ -81,7 +157,7 @@ class JobController extends Controller
             'status' => 'pending' //admin must approve first (safe from job scams but can be annoying to employers)
         ]);
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('jobs.hub')->with('success', 'Job posted and awaiting admin approval.');
     }
 
     public function edit($id){
@@ -103,7 +179,7 @@ class JobController extends Controller
 
         $job->update($validated);
 
-        return redirect()->route('jobs.show', $id);
+        return redirect()->route('jobs.hub')->with('success', 'Job updated successfully.');
     }
 
     public function destroy($id){
@@ -113,7 +189,7 @@ class JobController extends Controller
 
         $job->delete();
 
-        return redirect()->route('jobs.index');
+        return redirect()->route('jobs.hub')->with('success', 'Job deleted successfully.');
     }
 
     private function validateJob(Request $request): array{

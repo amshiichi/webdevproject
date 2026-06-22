@@ -192,7 +192,7 @@ The form to update details or upload a new PDF resume.
 
 <div class="ep-wrap">
     <div class="ep-card">
-        @php($isEmployer = session('account_role') === 'employer')
+        @php($isEmployer = $user->role === 'employer')
         <div class="ep-head">
             <div class="ep-avatar">{{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}</div>
             <div>
@@ -263,12 +263,21 @@ The form to update details or upload a new PDF resume.
 
                 <div class="field">
                     <label>Resume (PDF)</label>
-                    <label class="file-drop" style="display: block; cursor: pointer;">
-                        <div class="ic">⬆</div>
-                        <div class="upload-text">Click to upload or drag & drop</div>
-                        <div class="hint">PDF up to 5MB</div>
-                        <input type="file" name="resume" accept="application/pdf" style="display: none;">
-                    </label>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <label class="file-drop" style="display: block; cursor: pointer;">
+                            <div class="ic">⬆</div>
+                            <div class="upload-text">Click to upload or drag & drop</div>
+                            <div class="hint">PDF up to 5MB</div>
+                            <input type="file" name="resume" accept="application/pdf" style="display: none;">
+                        </label>
+                        @if($user->resume_path)
+                            <div style="font-size:14px;color:#475569;">
+                                Current resume: <strong>{{ basename($user->resume_path) }}</strong>
+                            </div>
+                        @else
+                            <div style="font-size:14px;color:#64748b;">No resume uploaded yet.</div>
+                        @endif
+                    </div>
                 </div>
 
             @endif

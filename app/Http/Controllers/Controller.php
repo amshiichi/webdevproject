@@ -7,7 +7,5 @@ use Illuminate\Support\Facades\Log;
 
 class Controller
 {
-    //add if needed
+    //
 }
-
-// placeholder controller

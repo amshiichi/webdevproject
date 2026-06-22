@@ -236,18 +236,18 @@
             </p>
 
             <div class="hero-actions">
-                <a class="button button-primary" href="{{ route('jobs.hub') }}"><i class="bi bi-briefcase-fill"></i> Job</a>
-                <a class="button button-soft" href="{{ route('jobs.edit', 1) }}"><i class="bi bi-pencil-square"></i> Edit Job Post</a>
+                <a class="button button-primary" href="{{ route('jobs.hub') }}"><i class="bi bi-briefcase-fill"></i> Manage Posts</a>
+                <a class="button button-soft" href="{{ route('jobs.create') }}"><i class="bi bi-plus-lg"></i> New Job</a>
                 <a class="button button-ghost" href="{{ route('applications.index') }}"><i class="bi bi-inboxes-fill"></i> View Applications</a>
             </div>
         </section>
 
         <aside class="side-card">
             <div class="stat-grid">
-                <div class="stat"><strong>14</strong><span>jobs posted</span></div>
-                <div class="stat"><strong>36</strong><span>new applicants</span></div>
-                <div class="stat"><strong>8</strong><span>draft roles</span></div>
-                <div class="stat"><strong>3</strong><span>jobs pending</span></div>
+                <div class="stat"><strong>{{ $totalJobs }}</strong><span>jobs posted</span></div>
+                <div class="stat"><strong>{{ $applications }}</strong><span>total applications</span></div>
+                <div class="stat"><strong>{{ $approvedJobs }}</strong><span>approved jobs</span></div>
+                <div class="stat"><strong>{{ $pendingJobs }}</strong><span>pending approval</span></div>
             </div>
             <div class="mini-card">
                 <strong>Quick tip</strong>
@@ -280,7 +280,7 @@
                         <strong>Edit an existing job</strong>
                         <span>Update descriptions, salary, or posting details.</span>
                     </div>
-                    <a class="button button-primary" href="{{ route('jobs.edit', 1) }}">Edit</a>
+                    <a class="button button-primary" href="{{ route('jobs.hub') }}">Edit</a>
                 </div>
             </div>
         </section>

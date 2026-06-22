@@ -199,83 +199,125 @@ A single, tabbed page for managing the job queue and flagged items.
 
 <div class="admin-wrapper">
     <h1 class="page-title">Admin Moderation</h1>
-    <p class="page-subtitle">Review and moderate employers and applicants</p>
+    <p class="page-subtitle">Review and moderate job listings</p>
 
     {{-- TABS --}}
     <div class="admin-tabs-container">
-        <a href="?tab=employers" class="admin-tab-link {{ request('tab', 'employers') == 'employers' ? 'active' : '' }}">
-            Employers
+        <a href="?tab=pending" class="admin-tab-link {{ request('tab', 'pending') == 'pending' ? 'active' : '' }}">
+            Pending Jobs
         </a>
-        <a href="?tab=applicants" class="admin-tab-link {{ request('tab') == 'applicants' ? 'active' : '' }}">
-            Applicants
+        <a href="?tab=approved" class="admin-tab-link {{ request('tab') == 'approved' ? 'active' : '' }}">
+            Approved Jobs
+        </a>
+        <a href="?tab=rejected" class="admin-tab-link {{ request('tab') == 'rejected' ? 'active' : '' }}">
+            Rejected Jobs
         </a>
     </div>
 
-    @if(request('tab', 'employers') == 'employers')
-        {{-- EMPLOYERS PANEL --}}
+    @if(request('tab', 'pending') == 'pending')
+        {{-- PENDING JOBS PANEL --}}
         <div class="table-container">
             <table class="custom-table">
                 <thead>
                     <tr>
+                        <th>Job Title</th>
                         <th>Company</th>
-                        <th>Email</th>
-                        <th>Jobs Posted</th>
-                        <th>Status</th>
+                        <th>Employer Email</th>
+                        <th>Posted Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach($employers as $emp) --}}
+                    @forelse($pendingJobs as $job)
                     <tr>
-                        <td class="primary-cell-text">TechCorp Inc.</td>
-                        <td class="secondary-cell-text">hr@techcorp.com</td>
-                        {{-- Before: <td style="font-weight: 600;">14</td> --}}
-                        <td class="metric-cell-text">14</td>
-                        <td>
-                            <span class="status-pill pill-pending">Pending</span>
-                        </td>
+                        <td class="primary-cell-text">{{ $job->title }}</td>
+                        <td class="secondary-cell-text">{{ $job->company }}</td>
+                        <td class="secondary-cell-text">{{ $job->employer->email }}</td>
+                        <td class="metric-cell-text">{{ $job->created_at->format('M d, Y') }}</td>
                         <td>
                             <div class="action-button-group">
-                                <button class="btn-admin-primary">Approve</button>
-                                <button class="btn-admin-severe">Reject</button>
+                                <form action="{{ route('admin.jobs.moderate', $job->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="decision" value="approved">
+                                    <button class="btn-admin-primary">Approve</button>
+                                </form>
+                                <form action="{{ route('admin.jobs.moderate', $job->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="decision" value="rejected">
+                                    <button class="btn-admin-severe">Reject</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                    {{-- @endforeach --}}
+                    @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: var(--muted);">No pending jobs for review.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    @elseif(request('tab') == 'approved')
+        {{-- APPROVED JOBS PANEL --}}
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Employer Email</th>
+                        <th>Approved Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($approvedJobs as $job)
+                    <tr>
+                        <td class="primary-cell-text">{{ $job->title }}</td>
+                        <td class="secondary-cell-text">{{ $job->company }}</td>
+                        <td class="secondary-cell-text">{{ $job->employer->email }}</td>
+                        <td class="metric-cell-text">{{ $job->updated_at->format('M d, Y') }}</td>
+                        <td>
+                            <span class="status-pill pill-active">Approved</span>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: var(--muted);">No approved jobs.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     @else
-        {{-- APPLICANTS PANEL --}}
+        {{-- REJECTED JOBS PANEL --}}
         <div class="table-container">
             <table class="custom-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Applications</th>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Employer Email</th>
+                        <th>Rejected Date</th>
                         <th>Status</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach($applicants as $app) --}}
+                    @forelse($rejectedJobs as $job)
                     <tr>
-                        <td class="primary-cell-text">Juan Dela Cruz</td>
-                        <td class="secondary-cell-text">juan@email.com</td>
-                        {{-- Before: <td style="font-weight: 600;">7</td> --}}
-                        <td class="metric-cell-text">7</td>
+                        <td class="primary-cell-text">{{ $job->title }}</td>
+                        <td class="secondary-cell-text">{{ $job->company }}</td>
+                        <td class="secondary-cell-text">{{ $job->employer->email }}</td>
+                        <td class="metric-cell-text">{{ $job->updated_at->format('M d, Y') }}</td>
                         <td>
-                            <span class="status-pill pill-active">Active</span>
-                        </td>
-                        <td>
-                            <div class="action-button-group">
-                                <a href="#" class="btn-admin-outline">View</a>
-                                <button class="btn-admin-severe">Suspend</button>
-                            </div>
+                            <span class="status-pill pill-pending">Rejected</span>
                         </td>
                     </tr>
-                    {{-- @endforeach --}}
+                    @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: var(--muted);">No rejected jobs.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

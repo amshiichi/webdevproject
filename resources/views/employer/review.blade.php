@@ -44,7 +44,7 @@
             <div class="job-top">
                 <div>
                     <h2>{{ $job->title }}</h2>
-                    <div class="meta">{{ $job->company }} • Posted {{ $job->posted_at }}</div>
+                    <div class="meta">{{ $job->company }} • Posted {{ $job->created_at->format('M d, Y') }}</div>
                 </div>
             </div>
 
@@ -89,9 +89,9 @@
                 <div class="field">
                     <label>Posting Status</label>
                     <select name="status">
-                        <option value="live" {{ $job->status === 'live' ? 'selected' : '' }}>Live</option>
-                        <option value="screening" {{ $job->status === 'screening' ? 'selected' : '' }}>Screening</option>
-                        <option value="closed" {{ $job->status === 'closed' ? 'selected' : '' }}>Closed</option>
+                        <option value="live" {{ $job->posting_status === 'live' ? 'selected' : '' }}>Live</option>
+                        <option value="screening" {{ $job->posting_status === 'screening' ? 'selected' : '' }}>Screening</option>
+                        <option value="closed" {{ $job->posting_status === 'closed' ? 'selected' : '' }}>Closed</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%">Save Status</button>

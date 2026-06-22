@@ -8,7 +8,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
 
-Route::view('employer/home', 'employer.home')->name('employer.home');
+Route::middleware(['auth', 'role:employer', 'approved'])->get('employer/home', [JobController::class, 'employerHome'])->name('employer.home');
 Route::view('/', 'landing')->name('landing');
 Route::middleware('auth')->get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
@@ -20,12 +20,12 @@ Route::post('register', [AuthController::class, 'register'])->name('register.sub
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Jobs
-Route::view('jobs', 'jobs.public')->name('jobs.public');
-Route::view('applicant/jobs', 'jobs.applicant')->name('jobs.applicant');
+Route::get('jobs', [JobController::class, 'publicJobs'])->name('jobs.public');
+Route::get('applicant/jobs', [JobController::class, 'applicantJobs'])->name('jobs.applicant');
 Route::get('home', [JobController::class, 'index'])->name('jobs.index');
 Route::get('job/show/{id}', [JobController::class, 'show'])->name('jobs.show');
 
-Route::middleware(['auth', 'role:employer'])->group(function(){
+Route::middleware(['auth', 'role:employer', 'approved'])->group(function(){
     Route::get('job', [JobController::class, 'hub'])->name('jobs.hub');
 
     Route::get('job/create', [JobController::class, 'create'])->name('jobs.create');
@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function(){
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('profile/resume', [ProfileController::class, 'downloadResume'])->name('profile.resume');
 });
 
 // Applications
@@ -55,10 +56,12 @@ Route::middleware('auth')->group(function(){
 });
 
 // Admin
-Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-Route::post('admin/moderate/{id}', [AdminController::class, 'moderateJob'])->name('admin.jobs.moderate');
+Route::middleware(['auth', 'role:admin'])->group(function(){
+    Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('admin/moderate/{id}', [AdminController::class, 'moderateJob'])->name('admin.jobs.moderate');
+});
 
 // Fallback
 Route::fallback(function () {
-    return 'Placeholder Text: Page Not Found.';
+    return view('errors.404');
 });

@@ -264,7 +264,7 @@ use Illuminate\Support\Facades\Storage;
                     Upload and manage your resume to make it easier for employers to view your qualifications.
                 </p>
                 @if ($user->resume_path)
-                    <a href="{{ Storage::disk('public')->url($user->resume_path) }}" target="_blank" class="btn btn-royal-outline">
+                    <a href="{{ route('profile.resume') }}" class="btn btn-royal-outline">
                         <i class="bi bi-file-earmark-pdf-fill me-2"></i>
                         Download Resume
                     </a>

@@ -56,4 +56,15 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
     }
+
+    public function downloadResume(){
+        $user = Auth::user();
+
+        if(!$user->resume_path || !Storage::disk('public')->exists($user->resume_path)){
+            abort(404, 'Resume not found.');
+        }
+
+        $filename = str_replace(' ', '-', $user->name) . '-Resume.pdf';
+        return response()->download(storage_path('app/public/' . $user->resume_path), $filename);
+    }
 }

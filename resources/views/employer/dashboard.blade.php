@@ -249,10 +249,10 @@
 
         <aside class="panel-card">
             <div class="stats-grid">
-                <div class="stat-card"><strong>14</strong><span>jobs posted</span></div>
-                <div class="stat-card"><strong>36</strong><span>applications</span></div>
-                <div class="stat-card"><strong>8</strong><span>shortlisted</span></div>
-                <div class="stat-card"><strong>3</strong><span>filled roles</span></div>
+                <div class="stat-card"><strong>{{ $jobs->count() }}</strong><span>jobs posted</span></div>
+                <div class="stat-card"><strong>{{ $totalApplications }}</strong><span>applications</span></div>
+                <div class="stat-card"><strong>{{ $shortlistedCount }}</strong><span>shortlisted</span></div>
+                <div class="stat-card"><strong>{{ $hiredCount }}</strong><span>hired applicants</span></div>
             </div>
         </aside>
     </div>
@@ -289,7 +289,7 @@
                     <td><a class="action-link" href="{{ route('applications.review', $job->id) }}">View</a></td>
                 </tr>
             @empty
-                <tr><td colspan="5">No jobs posted yet.</td></tr>
+                <tr><td colspan="6">No jobs posted yet.</td></tr>
             @endforelse
             </tbody>
         </table>

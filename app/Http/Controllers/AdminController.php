@@ -12,7 +12,13 @@ class AdminController extends Controller
 
     // update: Approving/rejecting jobs or moderating users.
 
-    public function index() { return view('admin.dashboard'); }
+    public function index() { 
+        $pendingJobs = JobListing::where('status', 'pending')->latest()->get();
+        $approvedJobs = JobListing::where('status', 'approved')->latest()->get();
+        $rejectedJobs = JobListing::where('status', 'rejected')->latest()->get();
+        
+        return view('admin.dashboard', compact('pendingJobs', 'approvedJobs', 'rejectedJobs')); 
+    }
     public function moderateJob(Request $request, $id){
         $job = JobListing::findOrFail($id);
 
