@@ -27,16 +27,19 @@ placeholder
 
 ## Tech Stack
 
-| Layer                 | Technology                   |
-| --------------------- | ---------------------------- |
-| Language              | PHP, JavaScript, HTML5, CSS3 |
-| Backend               | Laravel 12                   |
-| Frontend              | Blade Templates              |
-| Styling               | Bootstrap 5, Tailwind CSS 4  |
-| Database              | SQLite                       |
-| Build Tools           | Vite 8, NPM                  |
-| Dependency Management | Composer                     |
-| Version Control       | Git, GitHub                  |
+| Layer                   | Technology                       |
+| ----------------------- | -------------------------------- |
+| Language                | PHP, JavaScript, HTML5, CSS3     |
+| Backend                 | Laravel 12                       |
+| Frontend                | Blade Templates                  |
+| Styling                 | Bootstrap 5, Tailwind CSS 4      |
+| Database                | SQLite                           |
+| Build Tools             | Vite 8, NPM                      |
+| Dependency Management   | Composer                         |
+| Development Environment | Visual Studio Code               |
+| Database Tools          | SQLite Viewer (Florian Klampfer) |
+| Version Control         | Git, GitHub                      |
+
 
 
 ## Routes
