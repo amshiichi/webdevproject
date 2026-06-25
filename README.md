@@ -27,7 +27,17 @@ placeholder
 
 ## Tech Stack
 
-placeholder
+| Layer                 | Technology                   |
+| --------------------- | ---------------------------- |
+| Language              | PHP, JavaScript, HTML5, CSS3 |
+| Backend               | Laravel 12                   |
+| Frontend              | Blade Templates              |
+| Styling               | Bootstrap 5, Tailwind CSS 4  |
+| Database              | SQLite                       |
+| Build Tools           | Vite 8, NPM                  |
+| Dependency Management | Composer                     |
+| Version Control       | Git, GitHub                  |
+
 
 ## Routes
 
