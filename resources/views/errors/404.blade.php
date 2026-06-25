@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="error-container" style="text-align: center; padding: 50px;">
     <h1 style="font-size: 48px; margin-bottom: 20px;">404</h1>

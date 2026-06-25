@@ -143,9 +143,15 @@
         margin-bottom: 6px;
     }
 
-    .stat span { color: var(--muted); font-weight: 600; }
+    .stat span { 
+        color: var(--muted); 
+        font-weight: 600; 
+    }
 
-    .section { padding: 20px 0 88px; }
+    .section { 
+        padding: 20px 0 88px; 
+    }
+
     .section-head {
         display: flex;
         justify-content: space-between;
@@ -168,7 +174,11 @@
         max-width: 680px;
     }
 
-    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .grid-2 { 
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
 
     .feature-card,
     .job-card,
@@ -179,11 +189,20 @@
         box-shadow: 0 18px 44px rgba(16, 42, 114, 0.08);
     }
 
-    .feature-card { padding: 24px; }
+    .feature-card { 
+        padding: 24px; 
+    }
+
     .feature-icon {
-        width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
-        color: var(--white); background: linear-gradient(135deg, var(--royal-blue-bright), var(--royal-blue-deep));
-        margin-bottom: 18px; font-size: 1.2rem;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px; 
+        display: grid; 
+        place-items: center;
+        color: var(--white); 
+        background: linear-gradient(135deg, var(--royal-blue-bright), var(--royal-blue-deep));
+        margin-bottom: 18px;
+        font-size: 1.2rem;
     }
 
     .feature-card h3,
@@ -197,30 +216,75 @@
 
     .feature-card p,
     .job-card p,
-    .mini-card p { color: var(--muted); line-height: 1.7; margin: 0; }
-
-    .job-card { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
-    .job-top { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
-    .company {
-        display: flex; align-items: center; gap: 10px; color: var(--royal-blue-bright); font-weight: 700; margin-bottom: 14px;
+    .mini-card p { 
+        color: var(--muted); 
+        line-height: 1.7; 
+        margin: 0; 
     }
-    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+
+    .job-card { 
+        padding: 24px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 18px; 
+    }
+
+    .job-top { 
+        display: flex; 
+        justify-content: space-between; 
+        gap: 16px;
+        align-items: start;
+    }
+
+    .company {
+        display: flex;
+        align-items: center;
+        gap: 10px; 
+        color: var(--royal-blue-bright); 
+        font-weight: 700; 
+        margin-bottom: 14px;
+    }
+
+    .meta { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 10px; 
+        margin-bottom: 14px; 
+    }
+
     .meta span {
-        display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+        display: inline-flex; 
+        align-items: center; 
+        gap: 8px; 
+        padding: 8px 12px; 
+        border-radius: 999px;
         background: rgba(224, 242, 254, 0.9); color: var(--royal-blue-deep); font-weight: 600; font-size: 0.92rem;
     }
 
     .job-actions {
-        display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px;
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        gap: 16px; 
+        padding-top: 8px;
         border-top: 1px solid rgba(16, 42, 114, 0.10);
     }
 
     .ghost-icon {
-        width: 44px; height: 44px; border-radius: 14px; border: 1px solid rgba(16, 42, 114, 0.12);
-        background: rgba(255, 255, 255, 0.92); display: grid; place-items: center; color: var(--royal-blue-deep);
+        width: 44px; 
+        height: 44px; 
+        border-radius: 14px; 
+        border: 1px solid rgba(16, 42, 114, 0.12);
+        background: rgba(255, 255, 255, 0.92); 
+        display: grid; 
+        place-items: center; 
+        color: var(--royal-blue-deep);
     }
 
-    .button-light { background: var(--pure-white); color: var(--royal-blue-deep); }
+    .button-light { 
+        background: var(--pure-white); 
+        color: var(--royal-blue-deep); 
+    }
 
     .mini-grid {
         display: grid;
@@ -229,7 +293,9 @@
         margin-top: 22px;
     }
 
-    .mini-card { padding: 22px; }
+    .mini-card { 
+        padding: 22px; 
+    }
 
     .job-feed {
         margin-top: 24px;
@@ -342,7 +408,11 @@
         font-size: 0.92rem;
     }
 
-    .footer { padding: 24px 0 40px; color: var(--muted); font-size: 0.95rem; }
+    .footer { 
+        padding: 24px 0 40px; 
+        color: var(--muted); 
+        font-size: 0.95rem; 
+    }
 
     @media (max-width: 980px) {
         .hero,
@@ -383,7 +453,7 @@
             <div class="job-feed-head">
                 <div>
                     <h3>Recommended for you</h3>
-                    <p>A compact feed for the applicant dashboard, separate from the public jobs browser.</p>
+                    <p>Based on your profile, job views, and applications</p>
                 </div>
                 <a class="button button-ghost" href="{{ route('jobs.public') }}"><i class="bi bi-arrow-right"></i> Open Public Jobs</a>
             </div>

@@ -1,10 +1,4 @@
-<!--
-A shared file used for both creating and editing a job post (Employer only).
-form.blade
--->
-<!-- Shared file for creating and editing a job post (Employer only). -->
 @extends('layouts.app')
-
 @section('content')
 <style>
     :root {

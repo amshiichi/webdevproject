@@ -1,15 +1,11 @@
 @extends('layouts.app')
-
 @section('title', 'My Profile')
-
 @section('content')
-
 @php
 use Illuminate\Support\Facades\Storage;
 @endphp
 
 <style>
-    /* Premium Royal Blue & White Palette Configuration */
     :root {
         --royal-blue-deep: #0f1e46;
         --royal-blue-main: #1e40af;
@@ -19,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
         --pure-white: #ffffff;
     }
 
-    /* Global upscaling & layout containment */
     .profile-wrapper {
         max-width: 1100px;
         margin: 60px auto 100px auto;
@@ -35,7 +30,6 @@ use Illuminate\Support\Facades\Storage;
         box-shadow: 0 15px 35px rgba(30, 64, 175, 0.04);
     }
 
-    /* Avatar & Header Elements */
     .profile-avatar {
         width: 120px;
         height: 120px;
@@ -67,7 +61,6 @@ use Illuminate\Support\Facades\Storage;
         gap: 8px;
     }
 
-    /* Section Content Styles */
     .profile-section-grid {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
@@ -107,7 +100,6 @@ use Illuminate\Support\Facades\Storage;
         color: var(--royal-blue-bright);
     }
 
-    /* Premium Custom Badges */
     .skill-badge {
         background: var(--royal-blue-light);
         color: var(--royal-blue-main);
@@ -125,7 +117,6 @@ use Illuminate\Support\Facades\Storage;
         border-color: var(--royal-blue-main);
     }
 
-    /* Premium Button Overrides */
     .btn-royal-primary {
         background: var(--royal-blue-bright);
         color: var(--pure-white);
@@ -303,7 +294,6 @@ use Illuminate\Support\Facades\Storage;
     </div>
 </div>
 
-{{-- Resume Preview Modal --}}
 <div id="profile-resume-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:50;align-items:center;justify-content:center;">
     <div style="background:#fff;border-radius:20px;padding:24px;width:95%;max-width:860px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(15,23,42,.2);font-family:'Inter',sans-serif;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">

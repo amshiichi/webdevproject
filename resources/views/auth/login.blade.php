@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Log In')
-
 @section('content')
 <style>
     .auth-shell {
@@ -232,7 +230,7 @@
             @endif
 
             <div style="margin-bottom:20px;">
-                <p style="font-size:0.85rem;font-weight:700;color:#64748b;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Quick fill — demo accounts</p>
+                <p style="font-size:0.85rem;font-weight:700;color:#64748b;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Quick fill - demo accounts</p>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
                     <button type="button" onclick="fillLogin('applicant@example.com','password123')"
                         style="padding:8px 14px;border-radius:999px;border:1px solid rgba(16,42,114,0.15);background:#f8fafc;font:inherit;font-size:0.82rem;font-weight:600;color:#0b1e57;cursor:pointer;">

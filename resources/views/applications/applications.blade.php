@@ -1,7 +1,3 @@
-<!--
-A polymorphic list.
-If logged in as an applicant, it shows "My Applications". If logged in as an employer, it shows "Received Applications".
--->
 @extends('layouts.app')
 @section('title', 'My Applications')
 @section('content')
@@ -57,10 +53,22 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
         transform: translateY(-3px);
     }
 
-    .stat-card.total { border-left: 6px solid var(--royal-blue-deep); }
-    .stat-card.pending { border-left: 6px solid var(--royal-blue-bright); }
-    .stat-card.accepted { border-left: 6px solid var(--royal-blue-main); background: var(--royal-blue-light); }
-    .stat-card.rejected { border-left: 6px solid var(--royal-blue-tint); }
+    .stat-card.total { 
+        border-left: 6px solid var(--royal-blue-deep); 
+    }
+    
+    .stat-card.pending { 
+        border-left: 6px solid var(--royal-blue-bright); 
+    }
+    
+    .stat-card.accepted { 
+        border-left: 6px solid var(--royal-blue-main); 
+        background: var(--royal-blue-light); 
+    }
+    
+    .stat-card.rejected { 
+        border-left: 6px solid var(--royal-blue-tint); 
+    }
 
     .stat-label {
         color: var(--royal-blue-main);
@@ -126,15 +134,15 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
         color: var(--royal-blue-main);
     }
 
-   .status-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 10px 24px; 
-    border-radius: 10px;
-    font-size: 15px; 
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 24px; 
+        border-radius: 10px;
+        font-size: 15px; 
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .status-pill.pill-pending {
@@ -167,17 +175,17 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
     }
 
     .btn-royal-outline {
-    background: transparent;
-    color: var(--royal-blue-bright);
-    border: 2px solid var(--royal-blue-bright);
-    font-weight: 600;
-    font-size: 16px; 
-    padding: 12px 32px; 
-    border-radius: 12px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s ease;
+        background: transparent;
+        color: var(--royal-blue-bright);
+        border: 2px solid var(--royal-blue-bright);
+        font-weight: 600;
+        font-size: 16px; 
+        padding: 12px 32px; 
+        border-radius: 12px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.2s ease;
     }
 
     .btn-royal-outline:hover {

@@ -105,7 +105,10 @@
         transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
-    .button:hover { transform: translateY(-1px); }
+    .button:hover {
+        transform: translateY(-1px);
+    }
+
     .button-primary {
         background: #fff;
         color: var(--royal-blue-deep);
@@ -154,7 +157,10 @@
         margin-bottom: 6px;
     }
 
-    .stat span { color: var(--muted); font-weight: 600; }
+    .stat span {
+        color: var(--muted);
+        font-weight: 600;
+    }
 
     .section {
         display: grid;
@@ -195,8 +201,16 @@
         border: 1px solid var(--royal-blue-light);
     }
 
-    .quick-item strong { display: block; color: var(--royal-blue-deep); font-size: 1.05rem; }
-    .quick-item span { color: var(--muted); font-size: 0.95rem; }
+    .quick-item strong {
+        display: block;
+        color: var(--royal-blue-deep);
+        font-size: 1.05rem;
+    }
+    
+    .quick-item span {
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
 
     .side-stack {
         display: grid;
@@ -217,7 +231,11 @@
         color: var(--royal-blue-deep);
     }
 
-    .mini-card p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .mini-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+    }
 
     @media (max-width: 960px) {
         .hero,

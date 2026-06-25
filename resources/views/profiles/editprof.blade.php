@@ -1,9 +1,4 @@
-<!--
-The form to update details or upload a new PDF resume.
--->
-<!-- Form to update profile details or upload a new PDF resume. -->
 @extends('layouts.app')
-
 @section('content')
 <style>
     :root {
@@ -231,7 +226,7 @@ The form to update details or upload a new PDF resume.
 
             <div class="field">
                 <label>Phone Number</label>
-                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+63 900 000 0000">
+                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+639123456789">
             </div>
 
             <div class="field">

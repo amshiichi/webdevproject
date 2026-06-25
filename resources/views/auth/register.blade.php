@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Sign Up')
-
 @section('content')
 <style>
     .auth-shell {
@@ -85,7 +83,9 @@
         margin-bottom: 8px;
     }
 
-    .metric span { color: rgba(255,255,255,0.8); }
+    .metric span {
+        color: rgba(255,255,255,0.8);
+    }
 
     .auth-panel {
         padding: 56px;

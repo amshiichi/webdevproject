@@ -97,7 +97,10 @@
         white-space: nowrap;
     }
 
-    .button:hover { transform: translateY(-1px); }
+    .button:hover {
+        transform: translateY(-1px);
+    }
+
     .button-primary {
         background: #fff;
         color: var(--royal-blue-deep);
@@ -141,7 +144,10 @@
         margin-bottom: 6px;
     }
 
-    .stat-card span { color: var(--muted); font-weight: 600; }
+    .stat-card span {
+        color: var(--muted);
+        font-weight: 600;
+    }
 
     .section-head {
         display: flex;
@@ -224,7 +230,9 @@
         text-decoration: none;
     }
 
-    .action-link:hover { text-decoration: underline; }
+    .action-link:hover {
+        text-decoration: underline;
+    }
 
     @media (max-width: 980px) {
         .hero { grid-template-columns: 1fr; }

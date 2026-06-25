@@ -1,11 +1,5 @@
-<!--
-The Homepage. Contains the search input, filter sidebar, and the list of jobs.
-index.blade
--->
-
 @extends('layouts.app')
 @section('title', 'Find Jobs')
-
 @section('content')
 <style>
     :root {
@@ -267,7 +261,6 @@ index.blade
     }
 </style>
 
-{{-- HERO SECTION --}}
 <section class="hero-section">
     <div style="max-width:1000px; margin:auto">
         <h1 class="hero-title">Find Your Dream Job</h1>
@@ -283,11 +276,9 @@ index.blade
     </div>
 </section>
 
-{{-- MAIN CONTENT --}}
 <div class="job-board-wrapper">
     <div class="main-layout">
 
-        {{-- FILTERS --}}
         <aside class="sidebar-filters">
             <h3 class="filter-heading">
                 <i class="bi bi-funnel-fill"></i>
@@ -328,9 +319,7 @@ index.blade
             </form>
         </aside>
 
-        {{-- JOB LIST --}}
         <div>
-            {{-- HEADER --}}
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:36px;">
                 <div>
                     <h2 class="section-header-title">Available Jobs</h2>
@@ -344,7 +333,6 @@ index.blade
                 @endif
             </div>
 
-            {{-- JOB CARDS --}}
             @forelse ($jobs as $job)
                 <div class="job-card">
                     <div style="display:flex; justify-content:space-between; align-items:start; gap:24px;">

@@ -106,11 +106,15 @@
         transition: transform .2s ease, background-color .2s ease, color .2s ease;
     }
 
-    .button:hover { transform: translateY(-1px); }
+    .button:hover {
+        transform: translateY(-1px);
+    }
+
     .button-primary {
         background: linear-gradient(135deg, var(--royal-blue-bright), var(--royal-blue-deep));
         color: #fff;
     }
+    
     .button-ghost {
         background: #fff;
         color: var(--royal-blue-deep);

@@ -1,6 +1,3 @@
-<!--
-A single, tabbed page for managing the job queue and flagged items.
--->
 @extends('layouts.app')
 @section('title', 'Admin Moderation')
 @section('content')
@@ -201,7 +198,6 @@ A single, tabbed page for managing the job queue and flagged items.
     <h1 class="page-title">Admin Moderation</h1>
     <p class="page-subtitle">Review and moderate job listings</p>
 
-    {{-- TABS --}}
     <div class="admin-tabs-container">
         <a href="?tab=pending" class="admin-tab-link {{ request('tab', 'pending') == 'pending' ? 'active' : '' }}">
             Pending Jobs
@@ -215,7 +211,6 @@ A single, tabbed page for managing the job queue and flagged items.
     </div>
 
     @if(request('tab', 'pending') == 'pending')
-        {{-- PENDING JOBS PANEL --}}
         <div class="table-container">
             <table class="custom-table">
                 <thead>
@@ -258,7 +253,6 @@ A single, tabbed page for managing the job queue and flagged items.
             </table>
         </div>
     @elseif(request('tab') == 'approved')
-        {{-- APPROVED JOBS PANEL --}}
         <div class="table-container">
             <table class="custom-table">
                 <thead>
@@ -290,7 +284,6 @@ A single, tabbed page for managing the job queue and flagged items.
             </table>
         </div>
     @else
-        {{-- REJECTED JOBS PANEL --}}
         <div class="table-container">
             <table class="custom-table">
                 <thead>

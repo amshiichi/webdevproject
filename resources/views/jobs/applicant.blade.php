@@ -107,7 +107,9 @@
         background: #fff;
     }
 
-    .filters input::placeholder { color: rgba(255,255,255,0.72); }
+    .filters input::placeholder {
+        color: rgba(255,255,255,0.72);
+    }
 
     .filters-row {
         display: grid;
@@ -129,7 +131,10 @@
         white-space: nowrap;
     }
 
-    .button:hover { transform: translateY(-1px); }
+    .button:hover {
+        transform: translateY(-1px);
+    }
+
     .button-primary {
         background: #fff;
         color: var(--royal-blue-deep);
@@ -165,7 +170,10 @@
         margin-bottom: 6px;
     }
 
-    .panel span { color: var(--muted); font-weight: 600; }
+    .panel span {
+        color: var(--muted);
+        font-weight: 600;
+    }
 
     .section-head {
         display: flex;
@@ -298,20 +306,16 @@
             <form class="filters" action="{{ route('jobs.applicant') }}" method="GET">
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="Search by role or company">
                 <div class="filters-row">
-                    <select name="location">
-                        <option value="">All locations</option>
-                        <option value="Remote" {{ request('location') === 'Remote' ? 'selected' : '' }}>Remote</option>
-                        <option value="Manila" {{ request('location') === 'Manila' ? 'selected' : '' }}>Manila</option>
-                        <option value="Cebu" {{ request('location') === 'Cebu' ? 'selected' : '' }}>Cebu</option>
-                    </select>
+                    <input type="text" name="location" value="{{ request('location') }}" placeholder="Location">
                     <select name="type">
                         <option value="">All job types</option>
                         <option value="full-time" {{ request('type') === 'full-time' ? 'selected' : '' }}>Full-time</option>
                         <option value="part-time" {{ request('type') === 'part-time' ? 'selected' : '' }}>Part-time</option>
-                        <option value="contract" {{ request('type') === 'contract' ? 'selected' : '' }}>Contract</option>
+                        <option value="contract" {{ request('type') === 'contract' ? 'selected' : '' }}>Contractual</option>
+                        <option value="internship" {{ request('type') === 'internship' ? 'selected' : '' }}>Internship</option>
                     </select>
                 </div>
-                <button class="button button-primary" type="submit">Search Applicant Jobs</button>
+                <button class="button button-primary" type="submit">Search Jobs</button>
             </form>
         </section>
 
@@ -321,7 +325,7 @@
             <div class="panel-grid" style="margin-top:18px;">
                 <div class="panel"><strong>{{ $availableJobs }}</strong><span>available jobs</span></div>
                 <div class="panel"><strong>{{ $applicationsCount }}</strong><span>applications</span></div>
-                <div class="panel"><strong>{{ $pendingCount }}</strong><span>pending apps</span></div>
+                <div class="panel"><strong>{{ $pendingCount }}</strong><span>pending applications</span></div>
                 <div class="panel"><strong>{{ $interviewCount }}</strong><span>interview</span></div>
             </div>
             <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap;">
@@ -334,7 +338,7 @@
     <div class="section-head">
         <div>
             <h2>Applicant job feed</h2>
-            <p>These listings are presented in a dashboard grid with apply-focused actions, unlike the public browsing page.</p>
+            <p>Kickstart your career and gain real-world experience by applying to one of thousands of jobs with ApplyHub.</p>
         </div>
     </div>
 
