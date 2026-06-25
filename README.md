@@ -23,58 +23,7 @@ placeholder
 
 ## Features
 
-Authentication & Registration
-
-
-Shared login page with role-aware redirection (applicant → job feed, employer → dashboard, admin → moderation panel)
-Registration with role selection (applicant or employer); employer accounts are held in pending status until admin approval
-Session-based auth with remember-me support and CSRF protection
-
-
-Applicant Portal
-
-
-Job feed — browse all approved listings with live filters for keyword, location, job type (full-time / part-time / contract / internship), and experience level (entry / mid / senior)
-Job detail view — full description, requirements, company, salary range, and a single-click apply button
-One-click apply — submits an application; duplicate applications and resume-less applies are blocked with inline error messages
-Application tracker — lists all submitted applications with current status (Pending → Interview → Hired / Rejected)
-Recommended jobs — a small curated set of randomly surfaced listings shown on the home feed
-Profile & résumé — edit personal info (bio, phone, location, education, experience, skills) and upload a PDF résumé; résumé can be previewed in-browser or downloaded
-
-
-Employer Portal
-
-
-Employer home — summary cards for total job posts, pending/approved counts, total applications, and pending applications
-Job hub — list of all employer-owned postings with status badges and quick-action links
-Create / edit job listings — form-validated fields: title, description, requirements, company, location, salary range, job type, and experience level; new posts enter pending moderation
-Delete listings — soft-remove a job posting (owner-only, 403 on mismatch)
-Applicant review — per-job table of all applicants with their current stage and shortlisted count
-Applicant detail — full applicant profile, in-browser résumé preview, and résumé download
-Status management — update posting status (Live / Screening / Closed) and individual applicant status (Pending / Interview / Hired / Rejected); every status change fires an in-app notification to the applicant
-Email applicant — compose and send a free-form email to an applicant directly from the review panel; a notification copy lands in the applicant's notification feed
-
-
-Admin Panel
-
-
-Moderation dashboard — tabbed view of Pending, Approved, and Rejected job postings
-Approve / Reject — one-click moderation decision; employer receives an in-app notification with a link to the listing
-
-
-Notifications
-
-
-In-app notification feed for all three roles (new application, status changes, posting decisions, employer emails)
-Mark-as-read via AJAX (JSON response) or standard redirect
-Delete individual notifications
-
-
-Access Control & Middleware
-
-
-UserRolePermission — variadic role guard; routes declare which roles are allowed and 403 on mismatch
-AccountApproved — blocks employers whose account is still pending or has been suspended; logs them out and redirects to login with a descriptive error message
+Placeholder
 
 ## Tech Stack
 
