@@ -162,7 +162,151 @@ Access Control & Middleware
 
 
 ## Project Structure
-
+```text
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AdminController.php
+│   │   │   ├── ApplicationController.php
+│   │   │   ├── AuthController.php
+│   │   │   ├── Controller.php
+│   │   │   ├── JobController.php
+│   │   │   ├── NotificationController.php
+│   │   │   └── ProfileController.php
+│   │   │
+│   │   └── Middleware/
+│   │       ├── AccountApproved.php
+│   │       └── UserRolePermission.php
+│   │
+│   ├── Models/
+│   │   ├── Application.php
+│   │   ├── JobListing.php
+│   │   ├── Notification.php
+│   │   └── User.php
+│   │
+│   └── Providers/
+│       └── AppServiceProvider.php
+│
+├── bootstrap/
+│   ├── app.php
+│   ├── providers.php
+│   └── cache/
+│
+├── config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── filesystems.php
+│   ├── logging.php
+│   ├── mail.php
+│   ├── queue.php
+│   ├── services.php
+│   └── session.php
+│
+├── database/
+│   ├── factories/
+│   │   └── UserFactory.php
+│   │
+│   ├── migrations/
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   ├── 2026_06_21_193119_create_job_listings_table.php
+│   │   ├── 2026_06_22_093937_create_users_table.php
+│   │   ├── 2026_06_22_135513_create_notifications_table.php
+│   │   └── 2026_06_23_000000_create_applications_table.php
+│   │
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       └── JobListingSeeder.php
+│
+├── public/
+│   ├── .htaccess
+│   ├── favicon.ico
+│   ├── index.php
+│   └── robots.txt
+│
+├── resources/
+│   ├── css/
+│   │   └── app.css
+│   │
+│   ├── js/
+│   │   ├── app.js
+│   │   └── bootstrap.js
+│   │
+│   ├── sass/
+│   │   ├── _variables.scss
+│   │   └── app.scss
+│   │
+│   └── views/
+│       ├── landing.blade.php
+│       ├── welcome.blade.php
+│       │
+│       ├── layouts/
+│       │   └── app.blade.php
+│       │
+│       ├── auth/
+│       │   ├── login.blade.php
+│       │   └── register.blade.php
+│       │
+│       ├── jobs/
+│       │   ├── applicant.blade.php
+│       │   ├── form.blade.php
+│       │   ├── index.blade.php
+│       │   ├── public.blade.php
+│       │   └── show.blade.php
+│       │
+│       ├── applicant/
+│       │   └── home.blade.php
+│       │
+│       ├── employer/
+│       │   ├── dashboard.blade.php
+│       │   ├── home.blade.php
+│       │   ├── hub.blade.php
+│       │   └── review.blade.php
+│       │
+│       ├── admin/
+│       │   └── dashboard.blade.php
+│       │
+│       ├── applications/
+│       │   ├── applicant-detail.blade.php
+│       │   └── applications.blade.php
+│       │
+│       ├── profiles/
+│       │   ├── editprof.blade.php
+│       │   └── showprof.blade.php
+│       │
+│       ├── notifications/
+│       │   └── index.blade.php
+│       │
+│       └── errors/
+│           └── 404.blade.php
+│
+├── routes/
+│   ├── web.php
+│   └── console.php
+│
+├── storage/
+│   ├── app/
+│   ├── framework/
+│   └── logs/
+│
+├── tests/
+│   ├── TestCase.php
+│   └── Unit/
+│       └── ExampleTest.php
+│
+├── artisan
+├── composer.json
+├── composer.lock
+├── package.json
+├── package-lock.json
+├── phpunit.xml
+├── vite.config.js
+├── README.md
+├── README_APPLICANT.md
+└── README_EMPLOYER.md
+```
 
 ## License
 
