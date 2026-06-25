@@ -41,10 +41,70 @@ placeholder
 | Version Control         | Git, GitHub                      |
 
 
-
 ## Routes
 
-placeholder
+### Public Routes
+
+| Method | URL       | Description         |
+| ------ | --------- | ------------------- |
+| GET    | /         | Landing page        |
+| GET    | /login    | Login page          |
+| POST   | /login    | User authentication |
+| GET    | /register | Registration page   |
+| POST   | /register | User registration   |
+| GET    | /jobs     | Public job listings |
+
+### Authenticated Users (Applicant & Employer)
+
+| Method | URL                       | Description               |
+| ------ | ------------------------- | ------------------------- |
+| POST   | /logout                   | Logout current user       |
+| GET    | /home                     | User dashboard            |
+| GET    | /applicant/jobs           | Browse available jobs     |
+| GET    | /job/show/{id}            | View job details          |
+| POST   | /job/apply/{id}           | Submit job application    |
+| GET    | /profile                  | View profile              |
+| GET    | /profile/edit             | Edit profile              |
+| POST   | /profile/edit             | Update profile            |
+| GET    | /profile/resume           | Download resume           |
+| GET    | /profile/resume/preview   | Preview resume            |
+| GET    | /applications             | View applications         |
+| GET    | /applications/review/{id} | Review application        |
+| POST   | /applications/review/{id} | Update application status |
+| GET    | /notifications            | View notifications        |
+| POST   | /notifications/{id}/read  | Mark notification as read |
+| DELETE | /notifications/{id}       | Delete notification       |
+
+### Employer Routes
+
+| Method | URL                                                                 | Description               |
+| ------ | ------------------------------------------------------------------- | ------------------------- |
+| GET    | /employer/home                                                      | Employer dashboard        |
+| GET    | /job                                                                | Job management hub        |
+| GET    | /job/create                                                         | Create job posting        |
+| POST   | /job/create                                                         | Store job posting         |
+| GET    | /job/edit/{id}                                                      | Edit job posting          |
+| POST   | /job/edit/{id}                                                      | Update job posting        |
+| POST   | /job/delete/{id}                                                    | Delete job posting        |
+| GET    | /applications/review/{jobId}/applicant/{applicantId}                | View applicant profile    |
+| GET    | /applications/review/{jobId}/applicant/{applicantId}/resume         | Download applicant resume |
+| GET    | /applications/review/{jobId}/applicant/{applicantId}/resume/preview | Preview applicant resume  |
+| POST   | /applications/review/{jobId}/applicant/{applicantId}                | Update applicant status   |
+| POST   | /applications/review/{jobId}/applicant/{applicantId}/email          | Email applicant           |
+
+### Administrator Routes
+
+| Method | URL                  | Description                       |
+| ------ | -------------------- | --------------------------------- |
+| GET    | /admin/dashboard     | Administrative dashboard          |
+| POST   | /admin/moderate/{id} | Moderate and approve job postings |
+
+### Error Handling
+
+| Method | URL | Description                          |
+| ------ | --- | ------------------------------------ |
+| ANY    | *   | Custom 404 page for undefined routes |
+
 
 ## Project Structure
 
