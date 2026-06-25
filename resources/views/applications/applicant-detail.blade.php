@@ -32,8 +32,13 @@
 </style>
 
 <div class="ad-wrap">
+    @if(session('success'))
+        <div style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-weight:600;">
+            {{ session('success') }}
+        </div>
+    @endif
     <a class="ad-back" href="{{ route('applications.review', $job->id) }}">← Back to applicants</a>
-
+    
     <div class="ad-grid">
         <div class="card">
             <div class="head">
@@ -75,7 +80,10 @@
             <h2 class="section">Resume</h2>
             <div class="resume-box">
                 @if ($applicant->resume_path)
-                    <a class="btn btn-primary" href="{{ route('applications.applicant.resume', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">Download Resume</a>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <a class="btn btn-primary" href="{{ route('applications.applicant.resume', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">Download Resume</a>
+                        <button class="btn btn-ghost" onclick="document.getElementById('resume-preview-modal').style.display='flex'">Preview Resume</button>
+                    </div>
                 @else
                     <p>No resume uploaded.</p>
                 @endif
@@ -96,10 +104,58 @@
             </div>
 
             <div class="actions">
-                <a class="btn btn-primary" href="mailto:{{ $applicant->email }}">Email Applicant</a>
+                <button class="btn btn-primary" onclick="document.getElementById('email-modal').style.display='flex'">Email Applicant</button>
                 <a class="btn btn-ghost" href="{{ route('applications.review', $job->id) }}">Back to Tracking</a>
             </div>
         </aside>
+    </div>
+</div>
+
+{{-- Email Modal --}}
+<div id="email-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:20px;padding:32px;width:100%;max-width:520px;box-shadow:0 24px 60px rgba(15,23,42,.18);font-family:'Inter',sans-serif;">
+        <h2 style="margin:0 0 6px;font-family:'Poppins',sans-serif;color:#0f1e46;font-size:1.4rem;">Email Applicant</h2>
+        <p style="margin:0 0 20px;color:#64748b;font-size:0.9rem;">This sends a message directly to {{ $applicant->name }}.</p>
+
+        <form method="POST" action="{{ route('applications.email', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">
+            @csrf
+            <div style="margin-bottom:14px;">
+                <label style="display:block;font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;">Recipient</label>
+                <input type="email" name="recipient" value="{{ $applicant->email }}" readonly
+                    style="width:100%;padding:11px 14px;border:1px solid #e5e7eb;border-radius:8px;font:inherit;background:#f8fafc;color:#64748b;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:14px;">
+                <label style="display:block;font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;">Subject</label>
+                <input type="text" name="subject" placeholder="e.g. Interview Invitation" required
+                    style="width:100%;padding:11px 14px;border:1px solid #e5e7eb;border-radius:8px;font:inherit;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:20px;">
+                <label style="display:block;font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;">Message</label>
+                <textarea name="body" rows="5" placeholder="Write your message here..." required
+                    style="width:100%;padding:11px 14px;border:1px solid #e5e7eb;border-radius:8px;font:inherit;resize:vertical;box-sizing:border-box;"></textarea>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button type="button" onclick="document.getElementById('email-modal').style.display='none'"
+                    class="btn btn-ghost">Cancel</button>
+                <button type="submit" class="btn btn-primary">Send Email</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Resume Preview Modal --}}
+<div id="resume-preview-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:50;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:20px;padding:24px;width:95%;max-width:860px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(15,23,42,.2);font-family:'Inter',sans-serif;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;font-family:'Poppins',sans-serif;color:#0f1e46;font-size:1.3rem;">{{ $applicant->name }}'s Resume</h2>
+            <button onclick="document.getElementById('resume-preview-modal').style.display='none'"
+                style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;">✕</button>
+        </div>
+        <iframe src="{{ route('applications.applicant.resume.preview', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}"
+            style="flex:1;border:1px solid #e5e7eb;border-radius:10px;width:100%;"
+            type="application/pdf">
+            <p>Your browser cannot display PDFs inline. <a href="{{ route('applications.applicant.resume', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">Download instead.</a></p>
+        </iframe>
     </div>
 </div>
 @endsection

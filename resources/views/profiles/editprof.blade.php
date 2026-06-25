@@ -240,10 +240,6 @@ The form to update details or upload a new PDF resume.
             </div>
 
             @if ($isEmployer)
-                <div class="field">
-                    <label>Company Reviews</label>
-                    <textarea name="reviews" placeholder="Add notes or highlights from applicant reviews..."></textarea>
-                </div>
             @else
 
                 <div class="field">

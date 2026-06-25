@@ -389,27 +389,40 @@
             </div>
 
             <div class="job-feed-list">
+                @forelse($recommended as $job)
                 <div class="job-row">
                     <div class="job-row-main">
-                        <div class="job-row-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+                        <div class="job-row-icon">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
                         <div>
-                            <h3 class="job-row-title">Frontend Developer</h3>
-                            <div class="company"><i class="bi bi-building"></i> Nova Studio</div>
-                            <p>Recommended because it matches your saved skills and recent searches.</p>
+                            <h3 class="job-row-title">
+                                {{ $job->title }}
+                            </h3>
+                            <div class="company">
+                                <i class="bi bi-building"></i>
+                                {{ $job->company }}
+                            </div>
+                            <p>
+                                {{ Str::limit($job->description,120) }}
+                            </p>
                             <div class="job-row-meta">
-                                <span><i class="bi bi-geo-alt-fill"></i> Remote</span>
-                                <span><i class="bi bi-briefcase-fill"></i> Full-time</span>
-                                <span><i class="bi bi-clock"></i> Posted today</span>
+                                <span>
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                    {{ $job->location }}
+                                </span>
+                                <span>
+                                    <i class="bi bi-briefcase-fill"></i>
+                                    {{ ucfirst($job->type) }}
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div class="job-row-actions">
-                        <span class="status-pill"><i class="bi bi-bookmark-check-fill"></i> Saved</span>
-                        <a class="button button-primary" href="{{ route('jobs.applicant') }}">View</a>
-                    </div>
+                    <a href="{{ route('jobs.show',$job->id) }}"class="button button-primary">View Job</a>
                 </div>
-
-                <!-- Product Designer removed per request -->
+                @empty
+                <p>No jobs available.</p>
+                @endforelse
             </div>
         </div>
     </div>

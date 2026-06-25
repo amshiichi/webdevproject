@@ -53,7 +53,7 @@ show.blade
             </div>
         @endif
 
-        <form action="{{ route('applications.store', $job->id ?? 1) }}" method="POST" class="apply-bar">
+        <form action="{{ route('applications.store', $job->id ?? 1) }}" method="POST" class="apply-bar" onsubmit="return confirm('Apply for this job?')">
             @csrf
             <button type="submit" class="btn-apply">Apply Now →</button>
         </form>

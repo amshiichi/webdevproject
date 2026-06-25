@@ -147,6 +147,10 @@ class ApplicationController extends Controller{
         
         $request->validate(['status' => ['required', 'in:pending,interview,hired,rejected']]);
 
+        if ($application->status === $request->status) {
+            return back()->with('success', 'No changes made — status is already ' . ucfirst($request->status) . '.');
+        }
+
         $application->update(['status' => $request->status]);
 
         Notification::create([
@@ -162,5 +166,52 @@ class ApplicationController extends Controller{
         if($job->employer_id !== Auth::id()) {
             abort(403, 'Forbidden: You are not authorized to view this.');
         }
+    }
+
+    public function emailApplicant(Request $request, $jobId, $applicantId){
+        $job = JobListing::findOrFail($jobId);
+        $this->authorizeEmployerOwnsJob($job);
+
+        $applicant = User::where('id', $applicantId)->where('role', 'applicant')->firstOrFail();
+        $employer = Auth::user();
+
+        $request->validate([
+            'subject' => ['required', 'string', 'max:150'],
+            'body'    => ['required', 'string'],
+        ]);
+
+        \Illuminate\Support\Facades\Mail::raw($request->body, function ($message) use ($request, $applicant, $employer) {
+            $message->to($applicant->email, $applicant->name)
+                    ->subject($request->subject)
+                    ->from($employer->email, $employer->name);
+        });
+
+        Notification::create([
+            'user_id' => $applicant->id,
+            'message' => json_encode([
+                'type'    => 'email',
+                'preview' => "Email from {$employer->name} regarding \"{$job->title}\"",
+                'subject' => $request->subject,
+                'from'    => $employer->name,
+                'body'    => $request->body,
+            ]),
+            'link' => null,
+        ]);
+
+        return back()->with('success', 'Email sent to ' . $applicant->name . '.');
+    }
+
+    public function previewResume($jobId, $applicantId){
+        $job = JobListing::findOrFail($jobId);
+        $this->authorizeEmployerOwnsJob($job);
+
+        $applicant = User::where('id', $applicantId)->where('role', 'applicant')->firstOrFail();
+
+        if (!$applicant->resume_path || !Storage::disk('public')->exists($applicant->resume_path)){
+            abort(404, 'Resume not found.');
+        }
+
+        $path = storage_path('app/public/' . $applicant->resume_path);
+        return response()->file($path, ['Content-Type' => 'application/pdf']);
     }
 }

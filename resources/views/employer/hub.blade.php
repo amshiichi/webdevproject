@@ -53,8 +53,12 @@
                                     <div class="title">{{ $job->title }}</div>
                                     <div class="date">Posted on {{ $job->created_at }}</div>
                                 </div>
-                                <div>
+                                <div style="display:flex;gap:8px">
                                     <a class="btn-sm" href="{{ route('jobs.edit', $job->id) }}">Edit</a>
+                                    <form action="{{ route('jobs.destroy',$job->id) }}" method="POST" onsubmit="return confirm('Delete this job permanently?')">
+                                        @csrf
+                                        <button type="submit" class="btn-sm" style="background:#fee2e2;color:#dc2626;">Delete</button>
+                                    </form>
                                 </div>
                             </div>
                         @endforeach

@@ -264,14 +264,20 @@ use Illuminate\Support\Facades\Storage;
                     Upload and manage your resume to make it easier for employers to view your qualifications.
                 </p>
                 @if ($user->resume_path)
-                    <a href="{{ route('profile.resume') }}" class="btn btn-royal-outline">
-                        <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-                        Download Resume
-                    </a>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <a href="{{ route('profile.resume') }}" class="btn btn-royal-outline">
+                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>
+                            Download Resume
+                        </a>
+                        <button onclick="document.getElementById('profile-resume-modal').style.display='flex'" class="btn btn-royal-outline">
+                            <i class="bi bi-eye me-2"></i>
+                            Preview Resume
+                        </button>
+                    </div>
                 @else
                     <span class="btn btn-royal-outline" style="opacity:.6; pointer-events:none;">
                         <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-                        No Resume Uploaded
+                        Edit Profile to Upload Resume
                     </span>
                 @endif
             </div>
@@ -294,6 +300,22 @@ use Illuminate\Support\Facades\Storage;
                 @endif
             </div>
         @endif
+    </div>
+</div>
+
+{{-- Resume Preview Modal --}}
+<div id="profile-resume-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:50;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:20px;padding:24px;width:95%;max-width:860px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(15,23,42,.2);font-family:'Inter',sans-serif;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;font-family:'Poppins',sans-serif;color:#0f1e46;font-size:1.3rem;">Your Resume</h2>
+            <button onclick="document.getElementById('profile-resume-modal').style.display='none'"
+                style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;">✕</button>
+        </div>
+        <iframe src="{{ route('profile.resume.preview') }}"
+            style="flex:1;border:1px solid #e5e7eb;border-radius:10px;width:100%;"
+            type="application/pdf">
+            <p>Your browser cannot display PDFs inline. <a href="{{ route('profile.resume') }}">Download instead.</a></p>
+        </iframe>
     </div>
 </div>
 @endsection

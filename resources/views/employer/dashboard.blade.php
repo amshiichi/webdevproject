@@ -271,7 +271,6 @@
                     <th>Job Post</th>
                     <th>Company</th>
                     <th>Applications</th>
-                    <th>Shortlisted</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>

@@ -233,7 +233,7 @@ form.blade
             @endif
 
             <div class="actions">
-                <a href="{{ route('jobs.index') }}" class="btn btn-ghost">Cancel</a>
+                <a href="{{ route('jobs.hub') }}" class="btn btn-ghost">Cancel</a>
                 <button type="submit" class="btn btn-primary">{{ isset($job) ? 'Save Changes' : 'Publish Job' }}</button>
             </div>
 

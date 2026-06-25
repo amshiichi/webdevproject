@@ -247,7 +247,7 @@
                 <div class="stat"><strong>{{ $totalJobs }}</strong><span>jobs posted</span></div>
                 <div class="stat"><strong>{{ $applications }}</strong><span>total applications</span></div>
                 <div class="stat"><strong>{{ $approvedJobs }}</strong><span>approved jobs</span></div>
-                <div class="stat"><strong>{{ $pendingJobs }}</strong><span>pending approval</span></div>
+                <div class="stat"><strong>{{ $pendingApplications }}</strong><span>pending applications</span></div>
             </div>
             <div class="mini-card">
                 <strong>Quick tip</strong>

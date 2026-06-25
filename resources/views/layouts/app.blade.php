@@ -8,6 +8,7 @@ and a dynamic navigation bar that changes based on Auth::user()->role
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('title','JobPortal')</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -64,8 +65,19 @@ and a dynamic navigation bar that changes based on Auth::user()->role
   .tabs{display:flex;gap:8px;border-bottom:2px solid var(--line);margin-bottom:24px}
   .tabs a{padding:12px 22px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
   .tabs a.active{color:var(--rb-700);border-color:var(--rb-700)}
+  .notif-dot{
+      position:absolute;
+      top:-2px;
+      right:-10px;
+      width:10px;
+      height:10px;
+      background:#ef4444;
+      border-radius:50%;
+      border:2px solid white;
+  }
 </style>
 </head>
+
 <body>
 
 <nav class="nav">
@@ -75,13 +87,26 @@ and a dynamic navigation bar that changes based on Auth::user()->role
       <li><a href="{{ url('/') }}">Home</a></li>
       <li><a href="{{ route('jobs.public') }}">Jobs</a></li>
     </ul>
-  @elseif (session('account_role') === 'applicant')
+  @elseif (Auth::check() && Auth::user()->role === 'applicant')
     <div class="nav-right">
       <ul>
         <li><a href="{{ route('jobs.index') }}">Home</a></li>
         <li><a href="{{ route('jobs.applicant') }}">Jobs</a></li>
         <li><a href="{{ route('applications.index') }}">Applications</a></li>
-        <li><a href="{{ route('notifications.index') }}">Notifications</a></li>
+        <li><a href="{{ route('notifications.index') }}" style="position:relative;">Notifications
+                @php
+                $unreadNotifications = auth()->check()
+                    ? \App\Models\Notification::where('user_id', auth()->id())
+                        ->where('is_read', false)
+                        ->count()
+                    : 0;
+                @endphp
+
+                @if($unreadNotifications > 0)
+                    <span class="notif-dot"></span>
+                @endif
+            </a>
+        </li>
         <li><a href="{{ route('profile.show') }}">Profile</a></li>
       </ul>
       <details class="nav-menu">
@@ -96,14 +121,42 @@ and a dynamic navigation bar that changes based on Auth::user()->role
         </div>
       </details>
     </div>
-  @elseif (session('account_role') === 'employer')
+  @elseif (Auth::check() && Auth::user()->role === 'employer')
     <div class="nav-right">
       <ul>
         <li><a href="{{ route('employer.home') }}">Home</a></li>
         <li><a href="{{ route('jobs.hub') }}">Job</a></li>
         <li><a href="{{ route('applications.index') }}">Applications</a></li>
+        <li><a href="{{ route('notifications.index') }}" style="position:relative;">Notifications
+                @php
+                $unreadNotifications = auth()->check()
+                    ? \App\Models\Notification::where('user_id', auth()->id())
+                        ->where('is_read', false)
+                        ->count()
+                    : 0;
+                @endphp
+
+                @if($unreadNotifications > 0)
+                    <span class="notif-dot"></span>
+                @endif
+            </a>
+        </li>
         <li><a href="{{ route('profile.show') }}">Profile</a></li>
       </ul>
+      <details class="nav-menu">
+        <summary aria-label="Open account menu">
+          <i class="bi bi-list" style="font-size:26px;"></i>
+        </summary>
+        <div class="nav-menu-panel" role="menu">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"><i class="bi bi-box-arrow-right"></i> Log Out</button>
+          </form>
+        </div>
+      </details>
+    </div>
+  @elseif (Auth::check() && Auth::user()->role === 'admin')
+    <div class="nav-right">
       <details class="nav-menu">
         <summary aria-label="Open account menu">
           <i class="bi bi-list" style="font-size:26px;"></i>

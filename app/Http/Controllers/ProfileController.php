@@ -63,4 +63,16 @@ class ProfileController extends Controller
         $filename = str_replace(' ', '-', $user->name) . '-Resume.pdf';
         return response()->download(storage_path('app/public/' . $user->resume_path), $filename);
     }
+
+    public function previewResume(){
+        $user = Auth::user();
+
+        if (!$user->resume_path || !Storage::disk('public')->exists($user->resume_path)){
+            abort(404, 'Resume not found.');
+        }
+
+        $path = storage_path('app/public/' . $user->resume_path);
+        return response()->file($path, ['Content-Type' => 'application/pdf']);
+    }
+
 }

@@ -231,6 +231,24 @@
                 </div>
             @endif
 
+            <div style="margin-bottom:20px;">
+                <p style="font-size:0.85rem;font-weight:700;color:#64748b;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Quick fill — demo accounts</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button type="button" onclick="fillLogin('applicant@example.com','password123')"
+                        style="padding:8px 14px;border-radius:999px;border:1px solid rgba(16,42,114,0.15);background:#f8fafc;font:inherit;font-size:0.82rem;font-weight:600;color:#0b1e57;cursor:pointer;">
+                        <i class="bi bi-person-fill"></i> Applicant
+                    </button>
+                    <button type="button" onclick="fillLogin('employer@example.com','password123')"
+                        style="padding:8px 14px;border-radius:999px;border:1px solid rgba(16,42,114,0.15);background:#f8fafc;font:inherit;font-size:0.82rem;font-weight:600;color:#0b1e57;cursor:pointer;">
+                        <i class="bi bi-building"></i> Employer
+                    </button>
+                    <button type="button" onclick="fillLogin('admin@example.com','password123')"
+                        style="padding:8px 14px;border-radius:999px;border:1px solid rgba(16,42,114,0.15);background:#f8fafc;font:inherit;font-size:0.82rem;font-weight:600;color:#0b1e57;cursor:pointer;">
+                        <i class="bi bi-shield-fill"></i> Admin
+                    </button>
+                </div>
+            </div>
+
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
                 <div class="field">
@@ -261,4 +279,11 @@
         </section>
     </div>
 </div>
+
+<script>
+function fillLogin(email, password) {
+    document.getElementById('email').value = email;
+    document.getElementById('password').value = password;
+}
+</script>
 @endsection

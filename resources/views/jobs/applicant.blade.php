@@ -319,10 +319,10 @@
             <h2 style="margin:0;font-family:'Poppins',sans-serif;color:var(--royal-blue-deep);font-size:1.65rem;">Your snapshot</h2>
             <p style="margin:8px 0 0;color:var(--muted);">A dashboard view for active applicants.</p>
             <div class="panel-grid" style="margin-top:18px;">
-                <div class="panel"><strong>6</strong><span>saved jobs</span></div>
-                <div class="panel"><strong>4</strong><span>new matches</span></div>
-                <div class="panel"><strong>2</strong><span>pending apps</span></div>
-                <div class="panel"><strong>1</strong><span>interview</span></div>
+                <div class="panel"><strong>{{ $availableJobs }}</strong><span>available jobs</span></div>
+                <div class="panel"><strong>{{ $applicationsCount }}</strong><span>applications</span></div>
+                <div class="panel"><strong>{{ $pendingCount }}</strong><span>pending apps</span></div>
+                <div class="panel"><strong>{{ $interviewCount }}</strong><span>interview</span></div>
             </div>
             <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap;">
                 <a class="button button-ghost" style="color:var(--royal-blue-deep);border-color:rgba(16,42,114,.14);background:#fff;" href="{{ route('profile.show') }}">Profile</a>

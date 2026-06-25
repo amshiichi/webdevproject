@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\JobListingSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -40,6 +41,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'applicant',
             'account_status' => 'approved',
             'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+        ]);
+
+        $this->call([
+            JobListingSeeder::class
         ]);
     }
 }

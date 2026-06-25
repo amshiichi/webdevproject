@@ -13,9 +13,12 @@ class AuthController extends Controller
     //handles login, registration, and logout for all users
 
     public function showLogin(){
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user());
+        }
         return view('auth.login');
-    
     }
+
 
     public function login(Request $request){
         $credentials = $request->validate([
@@ -23,7 +26,9 @@ class AuthController extends Controller
             'password' => ['required']
         ]);
 
-        if(!Auth::attempt($credentials)){
+        $remember = $request->boolean('remember');
+
+        if(!Auth::attempt($credentials, $remember)){
             return back()->withErrors([
                 'email' => 'The provided credentials do not match system records.'
             ])->onlyInput('email');
@@ -45,6 +50,9 @@ class AuthController extends Controller
     }
 
     public function showRegister(){
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user());
+        }
         return view('auth.register');
     }
 
@@ -68,6 +76,14 @@ class AuthController extends Controller
         Auth::login($user);
         session(['account_role' => $validated['role']]);
         return $validated['role'] === 'employer' ? redirect()->route('employer.home') : redirect()->route('jobs.index');
+    }
+
+    private function redirectByRole($user){
+        return match($user->role) {
+            'admin'    => redirect()->route('admin.dashboard'),
+            'employer' => redirect()->route('employer.home'),
+            default    => redirect()->route('jobs.index'),
+        };
     }
 
     public function logout(Request $request){

@@ -14,8 +14,14 @@ class UserRolePermission
      * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response{
-        if(!$request->user() || !in_array($request->user()->role, $roles)){
+        $user = $request->user();
+
+        if (!$user || !in_array($user->role, $roles)) {
             abort(403, 'Forbidden: You are not authorized to access this page.');
+        }
+
+        if ($user->role === 'admin' && !in_array('admin', $roles)) {
+            abort(403, 'Forbidden: Admins cannot access this page.');
         }
 
         return $next($request);

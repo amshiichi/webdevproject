@@ -148,6 +148,18 @@ If logged in as an applicant, it shows "My Applications". If logged in as an emp
         color: var(--pure-white);
     }
 
+    .status-pill.pill-interview {
+        background: #fef3c7;
+        color: #b45309;
+        border: 2px solid #fde68a;
+    }
+
+    .status-pill.pill-hired {
+        background: #dcfce7;
+        color: #15803d;
+        border: 2px solid #86efac;
+    }
+
     .status-pill.pill-rejected {
         background: var(--pure-white);
         color: rgba(15, 30, 70, 0.45);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobListing;
 use App\Models\User;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,7 +71,30 @@ class JobController extends Controller
 
         $jobs = $query->latest()->get();
 
-        return view('jobs.applicant', compact('jobs'));
+        $applicationsCount = Application::where(
+            'applicant_id',
+            Auth::id()
+        )->count();
+
+        $pendingCount = Application::where(
+            'applicant_id',
+            Auth::id()
+        )->where(
+            'status',
+            'pending'
+        )->count();
+
+        $interviewCount = Application::where(
+            'applicant_id',
+            Auth::id()
+        )->where(
+            'status',
+            'interview'
+        )->count();
+
+        $availableJobs = $jobs->count();
+
+        return view('jobs.applicant', compact('jobs','applicationsCount','pendingCount','interviewCount','availableJobs'));
     }
 
     public function index(Request $request){
@@ -106,7 +130,8 @@ class JobController extends Controller
             $interviewCount = $applications->where('status', 'interview')->count();
             $notificationCount = $user->alerts()->count();
 
-            return view('applicant.home', compact('jobs', 'applicationsCount', 'interviewCount', 'notificationCount'));
+            $recommended = JobListing::where('status', 'approved')->inRandomOrder()->take(rand(1, 2))->get();
+            return view('applicant.home', compact('jobs', 'applicationsCount', 'interviewCount', 'notificationCount', 'recommended'));
         }
 
         return view('jobs.index', compact('jobs'));
@@ -121,14 +146,15 @@ class JobController extends Controller
 
     public function employerHome(){
         $user = Auth::user();
-        $totalJobs = JobListing::where('employer_id', $user->id)->count();
-        $pendingJobs = JobListing::where('employer_id', $user->id)->where('status', 'pending')->count();
-        $approvedJobs = JobListing::where('employer_id', $user->id)->where('status', 'approved')->count();
-        $applications = JobListing::where('employer_id', $user->id)
-            ->join('applications', 'job_listings.id', '=', 'applications.job_listing_id')
-            ->count();
+        $jobIds = JobListing::where('employer_id', $user->id)->pluck('id');
 
-        return view('employer.home', compact('totalJobs', 'pendingJobs', 'approvedJobs', 'applications'));
+        $totalJobs = $jobIds->count();
+        $pendingJobs = JobListing::whereIn('id', $jobIds)->where('status', 'pending')->count();
+        $approvedJobs = JobListing::whereIn('id', $jobIds)->where('status', 'approved')->count();
+        $applications = Application::whereIn('job_listing_id', $jobIds)->count();
+        $pendingApplications = Application::whereIn('job_listing_id', $jobIds)->where('status', 'pending')->count();
+
+        return view('employer.home', compact('totalJobs', 'pendingJobs', 'approvedJobs', 'applications', 'pendingApplications'));
     }
 
     public function show($id){
