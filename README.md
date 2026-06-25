@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# webdevproject
+# Job Portal System (Laravel-baed) by CS 3-4, Group 8
 
 ## Getting Started
 Welcome to **ApplyHub**, a Laravel-based job portal system. Follow the steps below to set it up on your local machine:
