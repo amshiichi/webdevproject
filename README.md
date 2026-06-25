@@ -9,10 +9,6 @@
 
 # webdevproject
 
-## Laravel Stuff
-
-placeholder
-
 ## Getting Started
 
 placeholder
