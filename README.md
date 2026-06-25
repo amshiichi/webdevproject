@@ -10,8 +10,23 @@
 # webdevproject
 
 ## Getting Started
+Welcome to ApplyHub, a Laravel-based job portal system. Follow the steps below to set it up on your local machine:
+```bash
+# 1. Clone the repository
 
-placeholder
+# 2. Install PHP dependencies
+composer install
+
+# 3. Configure environment and generate key
+copy .env.example .env
+php artisan key:generate
+
+# 4. Run migrations and seed for sample job data
+php artisan migrate:fresh --seed 
+
+# 5. Start the server
+php artisan serve
+```
 
 ## About ApplyHub
 
