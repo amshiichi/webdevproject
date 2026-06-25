@@ -161,6 +161,81 @@ Access Control & Middleware
 | ANY    | *   | Custom 404 page for undefined routes |
 
 
+## Database Design
+
+### 'users' Table
+
+| Attribute | Description |
+| ------ | ----------- |
+| `id` | Auto-increment primary key |
+| `name` | Full name of applicant |
+| `email` | Unique email address) |
+| `email_verified_at` | Email verification timestamp |
+| `role` | User role (applicant, employer, admin) |
+| `bio` | Short biography |
+| `phone` | Contact number |
+| `location` | Location |
+| `education` | Latest educational background |
+| `skills` | Comma-separated skills |
+| `experience` | Work experience |
+| `resume_path` | Path to uploaded resume|
+| `password` | Hashed password |
+| `account_status` | Account status (pending, approved, suspended) |
+| `remember_token` | Remember-me token |
+| `created_at` / `updated_at` | Timestamps |
+
+### 'job_listings' Table
+
+| Column | Description |
+| ------ | ----------- |
+| `id` | Auto-increment primary key |
+| `employer_id` | Owning employer (FK) |
+| `title` | Job title |
+| `description` | Job description |
+| `requirements` | Job requirements |
+| `company` | Company name |
+| `location` | Job location |
+| `salary_min` | Minimum salary |
+| `salary_max` | Maximum salary |
+| `type` | Employment type (full-time, part-time, contractual, internship |
+| `experience_level` | Required experience level (entry level, mid level, senior level) |
+| posting_status` | Employer-managed status (live, screening, closed) |
+| `status` | Admin-managed status (pending, approved, rejected) |
+| `created_at` / `updated_at` | Timestamps |
+
+### 'applications' Table
+
+| Column | Description |
+| ------ | ----------- |
+| `id` | Auto-increment primary key |
+| `applicant_id` | Applying user (FK) |
+| `job_listing_id` | Target job listing (FK) |
+| `status` | Application status (pending, interview, accepted, rejected)|
+| `created_at` / `updated_at` | Timestamps |
+
+### 'notifications' table
+
+| Column | Description |
+| ------ | ----------- |
+| `id` | Auto-increment primary key |
+| `user_id` | Recipient user (FK) |
+| `message` | Notification message |
+| `link` | Optional action link to specific notification |
+| `is_read` | Read status (default: false) |
+| `created_at` / `updated_at` | Timestamps |
+
+### Enums
+
+| Enum | Valid Values |
+| ---- | ------------ |
+| `users.role` | `applicant`, `employer`, `admin` |
+| `users.account_status` | `pending`, `approved`, `suspended` |
+| `job_listings.type` | `Full-time`, `Part-time`, `Contractual`, `Internship` |
+| `job_listings.experience_level` | `Entry Level`, `Mid Level`, `Senior Level` |
+| `job_listings.posting_status` | `live`, `screening`, `closed` |
+| `job_listings.status` | `pending`, `approved`, `rejected` |
+| `applications.status` | `pending`, `interview`, `accepted`, `rejected` |
+
 ## Project Structure
 ```text
 ├── app/
