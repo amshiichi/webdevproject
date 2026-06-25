@@ -189,6 +189,8 @@ placeholder
 
 ## License
 
-This project is built using Laravel, a PHP web application framework known for its expressive and elegant syntax. Laravel provides features such as routing, dependency injection, database ORM, schema migrations, session and cache management, queue processing, and event broadcasting. These tools help simplify web application development and support the creation of scalable and maintainable systems.
+This project is licensed under the MIT License.
 
-placeholder
+ApplyHub is a web-based job portal system developed as a final project for **COMP016: Web Development** under the **Bachelor of Science in Computer Science** program at **Polytechnic University of the Philippines (PUP) Sta. Mesa, Manila, Mabini Campus** for Academic Year 2025–2026.
+
+The system was built using Laravel 12 and other open-source technologies. Laravel is distributed under the MIT License.
