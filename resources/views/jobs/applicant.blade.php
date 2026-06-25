@@ -320,8 +320,8 @@
         </section>
 
         <aside class="panel-card">
-            <h2 style="margin:0;font-family:'Poppins',sans-serif;color:var(--royal-blue-deep);font-size:1.65rem;">Your snapshot</h2>
-            <p style="margin:8px 0 0;color:var(--muted);">A dashboard view for active applicants.</p>
+            <h2 style="margin:0;font-family:'Poppins',sans-serif;color:var(--royal-blue-deep);font-size:1.65rem;">Dashboard</h2>
+            <p style="margin:8px 0 0;color:var(--muted);">Track your job applications and available opportunities in one place.</p>
             <div class="panel-grid" style="margin-top:18px;">
                 <div class="panel"><strong>{{ $availableJobs }}</strong><span>available jobs</span></div>
                 <div class="panel"><strong>{{ $applicationsCount }}</strong><span>applications</span></div>

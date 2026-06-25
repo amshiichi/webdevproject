@@ -226,7 +226,7 @@
 
             <div class="field">
                 <label>Phone Number</label>
-                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+639123456789">
+                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+639123456789" pattern="^\+639\d{9}$" maxlength="13" minlength="13" title="Please enter a valid Philippine mobile number (e.g. +639123456789)">
             </div>
 
             <div class="field">
