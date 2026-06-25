@@ -37,7 +37,7 @@ placeholder
 | Build Tools             | Vite 8, NPM                      |
 | Dependency Management   | Composer                         |
 | Development Environment | Visual Studio Code               |
-| Database Tools          | SQLite Viewer (Florian Klampfer) |
+| Tools (VSC Extension)   | SQLite Viewer (Florian Klampfer) |
 | Version Control         | Git, GitHub                      |
 
 
