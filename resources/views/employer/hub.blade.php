@@ -55,6 +55,24 @@
         font-size:14px
     }
 
+    .back-card{
+        display:block;
+        padding:14px 20px;
+        border-radius:12px;
+        background:#fff;
+        border:1px solid #e0e7ff;
+        text-decoration:none;
+        color:#1e40af;
+        font-weight:600;
+        text-align:center;
+        margin-top:12px;
+        cursor:pointer;
+    }
+
+    .back-card:hover{
+        background:#f8fafc;
+    }
+
     .jobs-list{
         display:flex;
         flex-direction:column;
@@ -112,10 +130,19 @@
         <p>Choose what you want to do next: create a new posting or edit an existing one.</p>
 
         <div class="job-hub-actions">
-            <a class="post-card" href="{{ route('jobs.create') }}">
-                <div class="title">Post a Job</div>
-                <div class="desc">Quickly create and publish a new job posting.</div>
-            </a>
+            <div>
+                <a class="post-card" href="{{ route('jobs.create') }}">
+                    <div class="title">Post a Job</div>
+                    <div class="desc">Quickly create and publish a new job posting.</div>
+                </a>
+
+                <button
+                    type="button"
+                    class="back-card"
+                    onclick="window.history.back();">
+                    ← Back
+                </button>
+            </div>
 
             <div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
