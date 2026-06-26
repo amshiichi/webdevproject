@@ -20,9 +20,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'role',
-        'bio', 'phone', 'location',
-        'education', 'experience',
-        'skills', 'resume_path',
         'account_status',
         'password',
     ];
@@ -50,6 +47,18 @@ class User extends Authenticatable
         ];
     }
 
+    public function applicantProfile(){
+        return $this->hasOne(ApplicantProfile::class, 'user_id');
+    }
+
+    public function employerProfile(){
+        return $this->hasOne(EmployerProfile::class, 'user_id');
+    }
+
+    public function adminProfile(){
+        return $this->hasOne(AdminProfile::class, 'user_id');
+    }
+
     public function jobListings(){
         return $this->hasMany(JobListing::class, 'employer_id');
     }
@@ -60,5 +69,14 @@ class User extends Authenticatable
 
     public function alerts(){
         return $this->hasMany(Notification::class, 'user_id');
+    }
+
+    public function getProfileAttribute(){
+        return match($this->role){
+            'applicant' => $this->applicantProfile,
+            'employer' => $this->employerProfile,
+            'admin' => $this->adminProfile,
+            default => null,
+        };
     }
 }

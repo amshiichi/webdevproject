@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+@php($profile = $applicant->applicantProfile)
 <style>
     .ad-wrap{
         max-width:1100px;
@@ -236,7 +237,7 @@
                     <div class="avatar">{{ strtoupper(substr($applicant->name, 0, 1)) }}</div>
                     <div>
                         <h1 class="name">{{ $applicant->name }}</h1>
-                        <div class="meta">{{ $applicant->email }}<br>{{ $applicant->phone ?? 'No phone listed' }} • {{ $applicant->location ?? 'No location listed'}}</div>
+                        <div class="meta">{{ $applicant->email }}<br>{{ $profile->phone ?? 'No phone listed' }} • {{ $profile->location ?? 'No location listed'}}</div>
                     </div>
                 </div>
                 <div class="badge">{{ ucfirst($application->status) }}</div>
@@ -246,8 +247,8 @@
             <div class="info-grid">
                 <div class="info"><div class="lbl">Role</div><div class="val">Applying for {{ $job->title }}</div></div>
                 <div class="info"><div class="lbl">Company</div><div class="val">{{ $job->company }}</div></div>
-                <div class="info"><div class="lbl">Experience</div><div class="val">{{ $applicant->experience ?: 'Not specified' }}</div></div>
-                <div class="info"><div class="lbl">Education</div><div class="val">{{ $applicant->education ?: 'Not specified' }}</div></div>
+                <div class="info"><div class="lbl">Experience</div><div class="val">{{ $profile->experience ?: 'Not specified' }}</div></div>
+                <div class="info"><div class="lbl">Education</div><div class="val">{{ $profile->education ?: 'Not specified' }}</div></div>
                 <div class="info"><div class="lbl">Applied On</div><div class="val">{{ $application->created_at->format('M d, Y') }}</div></div>
                 <div class="info"><div class="lbl">Status</div><div class="val">{{ ucfirst($application->status) }}</div></div>
             </div>
@@ -255,8 +256,8 @@
             <div style="margin-top:18px;">
                 <h2 class="section">Skills</h2>
                 <div class="skills">
-                    @if ($applicant->skills)
-                        @foreach (explode(',', $applicant->skills) as $skill)
+                    @if ($profile && $profile->skills)
+                        @foreach (explode(',', $profile->skills) as $skill)
                             <span class="skill">{{ trim($skill) }}</span>
                         @endforeach
                     @else
@@ -269,7 +270,7 @@
         <aside class="card">
             <h2 class="section">Resume</h2>
             <div class="resume-box">
-                @if ($applicant->resume_path)
+                @if ($profile && $profile->resume_path)
                     <div style="display:flex;gap:10px;flex-wrap:wrap;">
                         <a class="btn btn-primary" href="{{ route('applications.applicant.resume', ['jobId' => $job->id, 'applicantId' => $applicant->id]) }}">Download Resume</a>
                         <button class="btn btn-ghost" onclick="document.getElementById('resume-preview-modal').style.display='flex'">Preview Resume</button>

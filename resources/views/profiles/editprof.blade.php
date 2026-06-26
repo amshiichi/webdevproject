@@ -188,6 +188,7 @@
 <div class="ep-wrap">
     <div class="ep-card">
         @php($isEmployer = $user->role === 'employer')
+        @php($profile = $user->profile)
         <div class="ep-head">
             <div class="ep-avatar">{{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}</div>
             <div>
@@ -221,17 +222,17 @@
 
             <div class="field">
                 <label>{{ $isEmployer ? 'About Us' : 'Bio' }}</label>
-                <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ old('bio', $user->bio ?? '') }}</textarea>
+                <textarea name="bio" placeholder="{{ $isEmployer ? 'Tell applicants about your company...' : 'Tell employers about yourself...' }}">{{ old('bio', $profile->bio ?? '') }}</textarea>
             </div>
 
             <div class="field">
                 <label>Phone Number</label>
-                <input type="text" name="phone" value="{{ old('phone', $user->phone ?? '') }}" placeholder="+639123456789" pattern="^\+639\d{9}$" maxlength="13" minlength="13" title="Please enter a valid Philippine mobile number (e.g. +639123456789)">
+                <input type="text" name="phone" value="{{ old('phone', $profile->phone ?? '') }}" placeholder="+639123456789" pattern="^\+639\d{9}$" maxlength="13" minlength="13" title="Please enter a valid Philippine mobile number (e.g. +639123456789)">
             </div>
 
             <div class="field">
                 <label>Location</label>
-                <input type="text" name="location" value="{{ old('location', $user->location ?? '') }}" placeholder="e.g. Manila, PH">
+                <input type="text" name="location" value="{{ old('location', $profile->location ?? '') }}" placeholder="e.g. Manila, PH">
             </div>
 
             @if ($isEmployer)
@@ -239,17 +240,17 @@
 
                 <div class="field">
                     <label>Education</label>
-                    <input type="text" name="education" value="{{ old('education', $user->education ?? '') }}" placeholder="e.g. BS Information Technology">
+                    <input type="text" name="education" value="{{ old('education', $profile->education ?? '') }}" placeholder="e.g. BS Information Technology">
                 </div>
 
                 <div class="field">
                     <label>Experience</label>
-                    <input type="text" name="experience" value="{{ old('experience', $user->experience ?? '') }}" placeholder="e.g. 3 years">
+                    <input type="text" name="experience" value="{{ old('experience', $profile->experience ?? '') }}" placeholder="e.g. 3 years">
                 </div>
 
                 <div class="field">
                     <label>Skills</label>
-                    <textarea name="skills" placeholder="e.g. HTML, CSS, JavaScript, PHP, Laravel, MySQL">{{ old('skills', $user->skills ?? '') }}</textarea>
+                    <textarea name="skills" placeholder="e.g. HTML, CSS, JavaScript, PHP, Laravel, MySQL">{{ old('skills', $profile->skills ?? '') }}</textarea>
                 </div>
 
                 <div class="field">
@@ -262,8 +263,8 @@
                             <input id="resume-input" type="file" name="resume" accept="application/pdf" style="display: none;">
                         </label>
                         <div id="resume-file-name" style="font-size:14px;color:#475569;">
-                            @if($user->resume_path)
-                                Current resume: <strong>{{ basename($user->resume_path) }}</strong>
+                            @if($profile && $profile->resume_path)
+                                Current resume: <strong>{{ basename($profile->resume_path) }}</strong>
                             @else
                                 No resume uploaded yet.
                             @endif
@@ -292,7 +293,7 @@
             if (file) {
                 fileNameDisplay.innerHTML = 'Selected file: <strong>' + file.name + '</strong> — ready to save.';
             } else {
-                fileNameDisplay.innerHTML = '{{ $user->resume_path ? "Current resume: <strong>" . basename($user->resume_path) . "</strong>" : "No resume uploaded yet." }}';
+                fileNameDisplay.innerHTML = '{{ $profile && $profile->resume_path ? "Current resume: <strong>" . basename($profile->resume_path) . "</strong>" : "No resume uploaded yet." }}';
             }
         });
     });

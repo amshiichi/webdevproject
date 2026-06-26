@@ -17,23 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('role')->default('applicant'); //applicant, employer, admin
-            $table->text('bio')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('location')->nullable();
-            $table->string('education')->nullable();
-            $table->text('skills')->nullable(); //comma-separated, for applicants only
-            $table->string('experience')->nullable();
-            $table->string('resume_path')->nullable(); // stored resume oath for applicants only
             $table->string('password');
             $table->string('account_status')->default('approved'); // pending, approved, suspended
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -52,7 +39,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

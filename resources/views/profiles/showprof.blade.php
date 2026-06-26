@@ -172,6 +172,7 @@ use Illuminate\Support\Facades\Storage;
         @endif
 
         @php($isEmployer = $user->role === 'employer')
+        @php($profile = $user->profile)
 
         <div style="display:flex; gap:32px; align-items:center; flex-wrap:wrap;">
             <div class="profile-avatar">
@@ -184,10 +185,10 @@ use Illuminate\Support\Facades\Storage;
                     <i class="bi bi-briefcase-fill"></i>
                     {{ $isEmployer ? 'Employer' : 'Applicant' }}
                 </p>
-                @if ($user->location)
+                @if ($profile && $profile->location)
                     <p class="profile-meta-text" style="margin-top: 6px; opacity: 0.8;">
                         <i class="bi bi-geo-alt-fill"></i>
-                        {{ $user->location }}
+                        {{ $profile->location }}
                     </p>
                 @endif
             </div>
@@ -207,7 +208,7 @@ use Illuminate\Support\Facades\Storage;
                     {{ $isEmployer ? 'About Us' : 'About' }}
                 </h3>
                 <p class="body-text">
-                    {{ $user->bio ?: 'No bio added yet.' }}
+                    {{ ($profile && $profile->bio) ? $profile->bio : 'No bio added yet.' }}
                 </p>
             </div>
 
@@ -220,16 +221,16 @@ use Illuminate\Support\Facades\Storage;
                     <i class="bi bi-envelope-fill contact-icon"></i>
                     <span>{{ $user->email }}</span>
                 </div>
-                @if ($user->phone)
+                @if ($profile && $profile->phone)
                     <div class="contact-item">
                         <i class="bi bi-telephone-fill contact-icon"></i>
-                        <span>{{ $user->phone }}</span>
+                        <span>{{ $profile->phone }}</span>
                     </div>
                 @endif
-                @if ($user->location)
+                @if ($profile && $profile->location)
                     <div class="contact-item">
                         <i class="bi bi-geo-alt-fill contact-icon"></i>
-                        <span>{{ $user->location }}</span>
+                        <span>{{ $profile->location }}</span>
                     </div>
                 @endif
             </div>
@@ -254,7 +255,7 @@ use Illuminate\Support\Facades\Storage;
                 <p class="body-text" style="margin-bottom: 24px;">
                     Upload and manage your resume to make it easier for employers to view your qualifications.
                 </p>
-                @if ($user->resume_path)
+                @if ($profile && $profile->resume_path)
                     <div style="display:flex;gap:12px;flex-wrap:wrap;">
                         <a href="{{ route('profile.resume') }}" class="btn btn-royal-outline">
                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>
@@ -280,9 +281,9 @@ use Illuminate\Support\Facades\Storage;
                     <i class="bi bi-stars"></i>
                     Skills
                 </h3>
-                @if ($user->skills)
+                @if ($profile && $profile->skills)
                     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
-                        @foreach (explode(',', $user->skills) as $skill)
+                        @foreach (explode(',', $profile->skills) as $skill)
                             <span class="skill-badge">{{ trim($skill) }}</span>
                         @endforeach
                     </div>
